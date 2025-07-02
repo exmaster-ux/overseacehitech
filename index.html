@@ -2179,22 +2179,73 @@
                   <label>Don’t fill this out if you're human: <input name="bot-field"></label>
                 </p>
                 <div>
-                  <label for="quote-name" class="block text-blue-800 font-bold mb-2">Name</label>
-                  <input type="text" id="quote-name" name="name" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                  <label for="quote-fullname" class="block text-blue-800 font-bold mb-2">Full Name<span class="text-red-500">*</span></label>
+                  <input type="text" id="quote-fullname" name="fullname" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
                 </div>
                 <div>
-                  <label for="quote-email" class="block text-blue-800 font-bold mb-2">Email</label>
+                  <label for="quote-email" class="block text-blue-800 font-bold mb-2">Email<span class="text-red-500">*</span></label>
                   <input type="email" id="quote-email" name="email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
                 </div>
                 <div>
-                  <label for="quote-service" class="block text-blue-800 font-bold mb-2">Service Interested In</label>
-                  <input type="text" id="quote-service" name="service" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                  <label for="quote-phone" class="block text-blue-800 font-bold mb-2">Phone</label>
+                  <input type="tel" id="quote-phone" name="phone" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
                 </div>
                 <div>
-                  <label for="quote-message" class="block text-blue-800 font-bold mb-2">Message</label>
-                  <textarea id="quote-message" name="message" rows="4" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"></textarea>
+                  <label for="quote-company" class="block text-blue-800 font-bold mb-2">Company</label>
+                  <input type="text" id="quote-company" name="company" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
                 </div>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 w-full">Request Quote</button>
+                <div>
+                  <label for="quote-service-type" class="block text-blue-800 font-bold mb-2">Service Type<span class="text-red-500">*</span></label>
+                  <select id="quote-service-type" name="service_type" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    <option value="" disabled selected>Select a service</option>
+                    <option value="Forwarding & Clearing">Forwarding & Clearing</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Logistics Solutions">Logistics Solutions</option>
+                    <option value="Customs Documentation">Customs Documentation</option>
+                    <option value="General Supplies">General Supplies</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="quote-origin" class="block text-blue-800 font-bold mb-2">Origin<span class="text-red-500">*</span></label>
+                  <input type="text" id="quote-origin" name="origin" required placeholder="City, Country" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                </div>
+                <div>
+                  <label for="quote-destination" class="block text-blue-800 font-bold mb-2">Destination<span class="text-red-500">*</span></label>
+                  <input type="text" id="quote-destination" name="destination" required placeholder="City, Country" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                </div>
+                <div>
+                  <label for="quote-cargo-type" class="block text-blue-800 font-bold mb-2">Cargo Type</label>
+                  <select id="quote-cargo-type" name="cargo_type" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    <option value="" disabled selected>Select cargo type</option>
+                    <option value="General Cargo">General Cargo</option>
+                    <option value="Perishable Goods">Perishable Goods</option>
+                    <option value="Hazardous Materials">Hazardous Materials</option>
+                    <option value="Machinery & Equipment">Machinery & Equipment</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="quote-weight" class="block text-blue-800 font-bold mb-2">Estimated Weight</label>
+                  <input type="text" id="quote-weight" name="estimated_weight" placeholder="e.g., 500 kg" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                </div>
+                <div>
+                  <label for="quote-timeline" class="block text-blue-800 font-bold mb-2">Timeline</label>
+                  <select id="quote-timeline" name="timeline" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    <option value="" disabled selected>Select timeline</option>
+                    <option value="Urgent">Urgent</option>
+                    <option value="1-2 Weeks">1-2 Weeks</option>
+                    <option value="2-4 Weeks">2-4 Weeks</option>
+                    <option value="Flexible">Flexible</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="quote-details" class="block text-blue-800 font-bold mb-2">Additional Details</label>
+                  <textarea id="quote-details" name="additional_details" rows="4" placeholder="Please provide any additional information about your shipment requirements..." class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"></textarea>
+                </div>
+                <div class="flex justify-between gap-4">
+                  <button type="button" onclick="closeQuoteModal()" class="bg-gray-200 hover:bg-gray-300 text-blue-800 font-bold py-3 px-6 rounded-full transition duration-300 w-1/2">Cancel</button>
+                  <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 w-1/2">Send Quote Request</button>
+                </div>
               </form>
               <div id="quote-success" class="hidden text-green-600 font-bold mt-4 text-center">Thank you! Your quote request has been received.</div>
             </div>
