@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - OVERSEACE HITECH INDUSTRIAL COMPANY LIMITED</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Performance Optimization Meta Tags -->
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
+    <style>
+        /* Lazy Loading Styles */
+        img[data-lazy="true"], video[data-lazy="true"] {
+            transition: filter 0.3s ease, opacity 0.3s ease;
+        }
+
+        img.loaded, video.loaded {
+            filter: none !important;
+            opacity: 1;
+        }
+
+        img.error {
+            background: #f3f4f6;
+            color: #9ca3af;
+        }
+
+        .video-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #2563eb;
+            font-size: 24px;
+            z-index: 10;
+        }
+
+        /* Progressive Loading Animation */
+        .fade-in-lazy {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in-lazy.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .gallery-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/gallery/gallery-hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .gallery-item img, .gallery-item video {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img, .gallery-item:hover video {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: end;
+            padding: 20px;
+            pointer-events: none; /* Prevent overlay from blocking video controls */
+        }
+
+        /* Only show overlay on hover for image items, not video items */
+        .gallery-item:hover img + .gallery-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        /* For video items, keep overlay hidden on hover so controls are accessible */
+        .gallery-item:hover video + .gallery-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background-color: #2563eb;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            position: relative;
+            margin: auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .modal img, .modal video {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #bbb;
+        }
+
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translate(0,  0px); }
+            50%  { transform: translate(0, 15px); }
+            100%   { transform: translate(0, -0px); }
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 55px;
+            height: 55px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.8);
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        .back-to-top:active {
+            transform: translateY(-1px) scale(0.95);
+        }
+
+        /* Enhanced responsiveness for different screen sizes */
+        @media (max-width: 768px) {
+            .back-to-top {
+                bottom: 15px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .back-to-top {
+                bottom: 10px;
+                right: 10px;
+                width: 45px;
+                height: 45px;
+                font-size: 16px;
+            }
+        }
+
+        /* Quote Modal Styles */
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 20px;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease-out;
+            position: relative;
+            z-index: 1001;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Enhanced responsiveness for different screen sizes */
+        @media (max-width: 768px) {
+            .modal-content {
+                margin: 10px;
+                width: calc(100% - 20px);
+            }
+
+            .modal-header {
+                padding: 15px 20px;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Header/Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center cursor-pointer" onclick="window.location.href='index.html'">
+                <img src="images/company-logo/company-logo.png" alt="OVERSEACE HITECH Logo" class="w-20 h-20 object-contain mr-4">
+                <div>
+                    <h1 class="text-xl font-bold text-blue-800">OVERSEACE HITECH</h1>
+                    <p class="text-xs text-gray-600">Industrial Company Limited</p>
+                </div>
+            </div>
+
+            <button id="menu-toggle" class="md:hidden focus:outline-none">
+                <i class="fas fa-bars text-2xl text-blue-800"></i>
+            </button>
+
+            <nav class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="text-gray-700 font-medium hover:text-blue-600 transition">Home</a>
+                <a href="index.html#about" class="text-gray-700 font-medium hover:text-blue-600 transition">About</a>
+                <a href="services.html" class="text-gray-700 font-medium hover:text-blue-600 transition">Services</a>
+                <a href="gallery.html" class="text-blue-800 font-medium hover:text-blue-600 transition">Gallery</a>
+                <a href="index.html#team" class="text-gray-700 font-medium hover:text-blue-600 transition">Team</a>
+                <a href="index.html#contact" class="text-gray-700 font-medium hover:text-blue-600 transition">Contact</a>
+                <button onclick="openQuoteModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full transition duration-300 transform hover:scale-105">
+                    Get A Quote <i class="fas fa-calculator ml-1"></i>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white py-2 px-4 shadow-lg">
+            <div class="flex flex-col space-y-3">
+                <a href="index.html" class="text-gray-700 font-medium hover:text-blue-600 transition py-2">Home</a>
+                <a href="index.html#about" class="text-gray-700 font-medium hover:text-blue-600 transition py-2">About</a>
+                <a href="services.html" class="text-gray-700 font-medium hover:text-blue-600 transition py-2">Services</a>
+                <a href="gallery.html" class="text-blue-800 font-medium hover:text-blue-600 transition py-2">Gallery</a>
+                <a href="index.html#team" class="text-gray-700 font-medium hover:text-blue-600 transition py-2">Team</a>
+                <a href="index.html#contact" class="text-gray-700 font-medium hover:text-blue-600 transition py-2">Contact</a>
+                <button onclick="openQuoteModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full transition duration-300 text-center w-full">
+                    Get A Quote <i class="fas fa-calculator ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gallery-hero flex items-center justify-center text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Our Work Gallery</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">Showcasing our successful projects and operations across Tanzania and East Africa</p>
+            <div class="flex justify-center">
+                <a href="#gallery-content" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105">
+                    View Our Work <i class="fas fa-arrow-down ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Overview -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-800 mb-4">Our Project Portfolio</h2>
+                <div class="w-20 h-1 bg-blue-600 mx-auto mb-6"></div>
+                <p class="text-gray-700 max-w-3xl mx-auto text-lg">
+                    Explore our extensive portfolio showcasing successful logistics operations, cargo handling,
+                    and supply chain solutions across multiple industries and regions.
+                </p>
+            </div>
+
+            <!-- Statistics -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+                <div class="text-center floating">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-ship text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-blue-800">500+</h3>
+                    <p class="text-gray-600">Shipments Cleared</p>
+                </div>
+                <div class="text-center floating" style="animation-delay: 0.5s;">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-truck text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-blue-800">1000+</h3>
+                    <p class="text-gray-600">Cargo Transported</p>
+                </div>
+                <div class="text-center floating" style="animation-delay: 1s;">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-handshake text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-blue-800">200+</h3>
+                    <p class="text-gray-600">Happy Clients</p>
+                </div>
+                <div class="text-center floating" style="animation-delay: 1.5s;">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-globe-africa text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-blue-800">8</h3>
+                    <p class="text-gray-600">Countries Served</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Filter and Content -->
+    <section id="gallery-content" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="filter-btn active bg-gray-200 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-full font-medium transition" data-filter="all">
+                    All Projects
+                </button>
+                <button class="filter-btn bg-gray-200 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-full font-medium transition" data-filter="clearing">
+                    Clearing & Forwarding
+                </button>
+                <button class="filter-btn bg-gray-200 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-full font-medium transition" data-filter="transportation">
+                    Transportation
+                </button>
+                <button class="filter-btn bg-gray-200 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-full font-medium transition" data-filter="supplies">
+                    General Supplies
+                </button>
+                <button class="filter-btn bg-gray-200 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-full font-medium transition" data-filter="videos">
+                    Videos
+                </button>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Clearing & Forwarding Images -->
+                <div class="gallery-item fade-in" data-category="clearing">
+                    <img src="images/gallery/clearing-customs-clearance.jpg"
+                         alt="Customs Clearance Operations"
+                         onclick="openModal(this)">
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Customs Clearance</h3>
+                            <p class="text-sm">Professional customs documentation and clearance services</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="clearing">
+                    <img src="images/gallery/clearing-port-operations.jpg"
+                         alt="Port Operations"
+                         onclick="openModal(this)">
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Port Operations</h3>
+                            <p class="text-sm">Efficient cargo handling at Dar es Salaam Port</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="clearing">
+                    <img src="images/gallery/overc1.jpg"
+                         alt="OVERSEACE Operations"
+                         onclick="openModal(this)">
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">OVERSEACE Operations</h3>
+                            <p class="text-sm">Our professional team handling logistics operations</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transportation Images -->
+                <div class="gallery-item fade-in" data-category="transportation">
+                    <img src="images/gallery/transport-heavy-cargo.jpg"
+                         alt="Heavy Cargo Transportation"
+                         onclick="openModal(this)">
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Heavy Cargo Transportation</h3>
+                            <p class="text-sm">Specialized transport for oversized and heavy cargo</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="transportation">
+                    <img src="images/gallery/overc6.jpg"
+                         alt="OVERSEACE Fleet Operations"
+                         onclick="openModal(this)">
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">OVERSEACE Fleet Operations</h3>
+                            <p class="text-sm">Our modern fleet ensuring reliable cargo transport</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="clearing">
+                    <img src="images/services/forwarding-&-clearing.jpg"
+                         alt="Forwarding & Clearing Services"
+                         onclick="openModal(this)">
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Forwarding & Clearing</h3>
+                            <p class="text-sm">Comprehensive forwarding and clearing solutions</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- General Supplies Images -->
+                <div class="gallery-item fade-in" data-category="supplies">
+                    <img src="images/gallery/supplies-construction.jpg"
+                         alt="Construction Supplies"
+                         onclick="openModal(this)">
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Construction Supplies</h3>
+                            <p class="text-sm">Building materials and construction equipment supply</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="supplies">
+                    <img src="images/gallery/supplies-electrical.jpg"
+                         alt="Electrical Supplies"
+                         onclick="openModal(this)">
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Electrical Supplies</h3>
+                            <p class="text-sm">Industrial electrical equipment and components</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="supplies">
+                    <img src="images/services/general-supplies.jpg"
+                         alt="General Supplies Services"
+                         onclick="openModal(this)">
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">General Supplies</h3>
+                            <p class="text-sm">Complete range of general supplies and equipment</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Project Images -->
+                <div class="gallery-item fade-in" data-category="clearing">
+                    <img src="images/services/custom-documentation.jpg"
+                         alt="Custom Documentation Services"
+                         onclick="openModal(this)">
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Custom Documentation</h3>
+                            <p class="text-sm">Comprehensive customs documentation services</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="transportation">
+                    <img src="images/gallery/overc6.jpg"
+                         alt="Logistics Solutions"
+                         onclick="openModal(this)">
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Logistics Solutions</h3>
+                            <p class="text-sm">Comprehensive logistics and supply chain management</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Content -->
+                <div class="gallery-item fade-in" data-category="videos">
+                    <video controls onclick="openModal(this)">
+                        <source src="images/gallery/overcv.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">OVERSEACE Operations</h3>
+                            <p class="text-sm">Overview of our comprehensive logistics operations</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="videos">
+                    <video controls onclick="openModal(this)">
+                        <source src="images/gallery/overcv1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Port Operations</h3>
+                            <p class="text-sm">Live footage of our port clearance operations</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="videos">
+                    <video controls onclick="openModal(this)">
+                        <source src="images/gallery/overcv2.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Transportation Fleet</h3>
+                            <p class="text-sm">Our modern transportation fleet in action</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="videos">
+                    <video controls onclick="openModal(this)">
+                        <source src="images/gallery/overcv3.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Warehouse Operations</h3>
+                            <p class="text-sm">Efficient warehouse management and storage</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="videos">
+                    <video controls onclick="openModal(this)">
+                        <source src="images/gallery/overcv4.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Cargo Handling</h3>
+                            <p class="text-sm">Professional cargo handling and processing</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="videos">
+                    <video controls onclick="openModal(this)">
+                        <source src="images/gallery/overcv5.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Logistics Solutions</h3>
+                            <p class="text-sm">Comprehensive logistics and supply chain solutions</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="videos">
+                    <video controls onclick="openModal(this)">
+                        <source src="images/gallery/overcv6.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Equipment Operations</h3>
+                            <p class="text-sm">Modern equipment and machinery in operation</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="videos">
+                    <video controls onclick="openModal(this)">
+                        <source src="images/gallery/overcv7.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Project Management</h3>
+                            <p class="text-sm">Professional project management and execution</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="videos">
+                    <video controls onclick="openModal(this)">
+                        <source src="images/gallery/overcv8.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Quality Control</h3>
+                            <p class="text-sm">Rigorous quality control and inspection processes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="videos">
+                    <video controls onclick="openModal(this)">
+                        <source src="images/gallery/overcv9.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Team Operations</h3>
+                            <p class="text-sm">Our professional team working together</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="videos">
+                    <video controls onclick="openModal(this)">
+                        <source src="images/gallery/overcv10.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Safety Procedures</h3>
+                            <p class="text-sm">Safety protocols and procedures in action</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="videos">
+                    <video controls onclick="openModal(this)">
+                        <source src="images/gallery/overcv11.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Client Services</h3>
+                            <p class="text-sm">Dedicated client service and support</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fade-in" data-category="videos">
+                    <video controls onclick="openModal(this)">
+                        <source src="images/gallery/overcv12.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="gallery-overlay">
+                        <div class="text-white">
+                            <h3 class="text-lg font-bold">Innovation & Technology</h3>
+                            <p class="text-sm">Latest technology and innovative solutions</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Image/Video Viewing -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modalImage" style="display: none;">
+            <video id="modalVideo" controls style="display: none;">
+                <source id="modalVideoSource" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div id="modalCaption" class="text-white text-center mt-4"></div>
+        </div>
+    </div>
+
+    <!-- Call to Action Section -->
+    <section class="py-16 bg-blue-800 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Impressed by Our Work?</h2>
+            <p class="text-xl mb-8 max-w-3xl mx-auto text-blue-100">
+                Join our growing list of satisfied clients and experience the OVERSEACE HITECH difference.
+                Let us handle your logistics needs with the same professionalism and efficiency.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="index.html#contact" class="bg-white hover:bg-gray-100 text-blue-800 font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                    Start Your Project <i class="fas fa-rocket ml-2"></i>
+                </a>
+                <a href="services.html" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full border-2 border-blue-600 transition duration-300 transform hover:scale-105">
+                    View Our Services <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <img src="images/company-logo/company-logo.png" alt="OVERSEACE HITECH Logo" class="w-20 h-20 object-contain mr-3">
+                        <h3 class="text-xl font-bold">OVERSEACE HITECH</h3>
+                    </div>
+                    <p class="text-blue-200 mb-4">
+                        Providing exceptional clearing, forwarding, and logistics services across Tanzania and East Africa.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-blue-200 hover:text-white transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-blue-200 hover:text-white transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-blue-200 hover:text-white transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="text-blue-200 hover:text-white transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-blue-200 hover:text-white transition">Home</a></li>
+                        <li><a href="index.html#about" class="text-blue-200 hover:text-white transition">About Us</a></li>
+                        <li><a href="services.html" class="text-blue-200 hover:text-white transition">Services</a></li>
+                        <li><a href="gallery.html" class="text-blue-200 hover:text-white transition">Gallery</a></li>
+                        <li><a href="index.html#team" class="text-blue-200 hover:text-white transition">Our Team</a></li>
+                        <li><a href="index.html#contact" class="text-blue-200 hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Our Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="services.html#forwarding-clearing" class="text-blue-200 hover:text-white transition">Forwarding & Clearing</a></li>
+
+                        <li><a href="services.html#transportation" class="text-blue-200 hover:text-white transition">Transportation</a></li>
+                        <li><a href="services.html#logistics-solutions" class="text-blue-200 hover:text-white transition">Logistics Solutions</a></li>
+                        <li><a href="services.html#customs-documentation" class="text-blue-200 hover:text-white transition">Customs Documentation</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Contact Info</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-blue-300"></i>
+                            <span class="text-blue-200">Office Nr 12 On Floor Nr 2 in PSSSF Samora House, Junction of Samora and Morogoro Rd, Dar es Salaam</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-3 text-blue-300"></i>
+                            <span class="text-blue-200">+255 717 225 030</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-blue-300"></i>
+                            <span class="text-blue-200">mudyhajixpro@gmail.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-clock mt-1 mr-3 text-blue-300"></i>
+                            <span class="text-blue-200">Mon-Fri: 8:00 AM - 5:00 PM</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-blue-800 mt-12 pt-8 text-center text-blue-300">
+                <p>&copy; 2023 OVERSEACE HITECH INDUSTRIAL COMPANY LIMITED. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+
+                // Close mobile menu if open
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
+        // Gallery filtering
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+
+                // Filter gallery items
+                galleryItems.forEach(item => {
+                    const category = item.getAttribute('data-category');
+
+                    if (filter === 'all' || category === filter) {
+                        item.style.display = 'block';
+                        setTimeout(() => {
+                            item.classList.add('visible');
+                        }, 100);
+                    } else {
+                        item.classList.remove('visible');
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Modal functionality
+        function openModal(element) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalVideo = document.getElementById('modalVideo');
+            const modalVideoSource = document.getElementById('modalVideoSource');
+            const modalCaption = document.getElementById('modalCaption');
+
+            if (element.tagName === 'IMG') {
+                modalImage.src = element.src;
+                modalImage.alt = element.alt;
+                modalImage.style.display = 'block';
+                modalVideo.style.display = 'none';
+                modalCaption.textContent = element.alt;
+            } else if (element.tagName === 'VIDEO') {
+                const source = element.querySelector('source');
+                modalVideoSource.src = source.src;
+                modalVideo.load();
+                modalVideo.style.display = 'block';
+                modalImage.style.display = 'none';
+
+                const overlay = element.nextElementSibling;
+                const title = overlay.querySelector('h3').textContent;
+                modalCaption.textContent = title;
+            }
+
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            const modalVideo = document.getElementById('modalVideo');
+
+            modal.style.display = 'none';
+            modalVideo.pause();
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Animation on scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.fade-in');
+
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+
+                if(elementPosition < screenPosition) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Run animation check on load and scroll
+        window.addEventListener('load', animateOnScroll);
+        window.addEventListener('scroll', animateOnScroll);
+
+        // Initialize gallery
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show all items initially
+            galleryItems.forEach(item => {
+                item.style.display = 'block';
+            });
+
+            // Trigger initial animation
+            setTimeout(animateOnScroll, 100);
+
+            // Quote Modal Elements
+            const quoteModal = document.getElementById('quoteModal');
+            const quoteForm = document.getElementById('quoteForm');
+            const quoteSuccess = document.getElementById('quote-success');
+
+            // Function to open quote modal
+            window.openQuoteModal = function() {
+                if (quoteModal) {
+                    quoteModal.classList.add('show');
+                    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                }
+            };
+
+            // Function to close quote modal
+            window.closeQuoteModal = function() {
+                if (quoteModal) {
+                    quoteModal.classList.remove('show');
+                    document.body.style.overflow = 'auto'; // Restore scrolling
+                    if (quoteForm) quoteForm.reset(); // Reset form
+                    if (quoteSuccess) quoteSuccess.classList.add('hidden'); // Hide success message
+                }
+            };
+
+            if (quoteModal) {
+                // Close modal when clicking outside
+                quoteModal.addEventListener('click', function(e) {
+                    if (e.target === quoteModal) {
+                        window.closeQuoteModal();
+                    }
+                });
+
+                // Close modal with Escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && quoteModal.classList.contains('show')) {
+                        window.closeQuoteModal();
+                    }
+                });
+
+                // Handle quote form submission
+                if (quoteForm) {
+                    quoteForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+
+                        // Get form data
+                        const formData = new FormData(quoteForm);
+                        const data = Object.fromEntries(formData);
+
+                        // Show loading state
+                        const submitButton = quoteForm.querySelector('button[type="submit"]');
+                        const originalText = submitButton.innerHTML;
+                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+                        submitButton.disabled = true;
+
+                        // Send to backend
+                        fetch('process-form.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.success) {
+                                // Hide form and show success message
+                                quoteForm.style.display = 'none';
+                                if (quoteSuccess) quoteSuccess.classList.remove('hidden');
+
+                                // Reset button and form after showing success
+                                setTimeout(() => {
+                                    submitButton.innerHTML = originalText;
+                                    submitButton.disabled = false;
+                                    quoteForm.style.display = 'block';
+                                    quoteForm.reset();
+                                    window.closeQuoteModal();
+                                }, 3000);
+                            } else {
+                                alert('Error: ' + result.message);
+                                submitButton.innerHTML = originalText;
+                                submitButton.disabled = false;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred. Please try again or contact us directly.');
+                            submitButton.innerHTML = originalText;
+                            submitButton.disabled = false;
+                        });
+                    });
+                }
+            }
+
+            // Back to Top Button Functionality
+            const backToTopButton = document.getElementById('backToTop');
+
+            if (backToTopButton) {
+                // Show/hide button based on scroll position with throttling for performance
+                let ticking = false;
+                function updateBackToTop() {
+                    if (window.pageYOffset > 300) {
+                        backToTopButton.classList.add('show');
+                    } else {
+                        backToTopButton.classList.remove('show');
+                    }
+                    ticking = false;
+                }
+
+                window.addEventListener('scroll', function() {
+                    if (!ticking) {
+                        requestAnimationFrame(updateBackToTop);
+                        ticking = true;
+                    }
+                });
+
+                // Scroll to top when button is clicked
+                backToTopButton.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+    </script>
+
+    <!-- Get A Quote Modal -->
+    <div id="quoteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-2xl font-bold">Get A Quote</h2>
+                <p class="text-blue-100 mt-2">Tell us about your logistics needs and we'll provide you with a customized quote</p>
+                <button class="modal-close" onclick="closeQuoteModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="quoteForm" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                            <input type="text" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                            <input type="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                            <input type="tel" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                            <input type="text" name="company" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Service Type *</label>
+                        <select name="service" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Select a service</option>
+                            <option value="ocean-freight">Ocean Freight</option>
+                            <option value="air-freight">Air Freight</option>
+                            <option value="land-transport">Land Transport</option>
+                            <option value="warehousing">Warehousing</option>
+                            <option value="customs-clearance">Customs Clearance</option>
+                            <option value="project-cargo">Project Cargo</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Origin *</label>
+                            <input type="text" name="origin" required placeholder="City, Country" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Destination *</label>
+                            <input type="text" name="destination" required placeholder="City, Country" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Cargo Type</label>
+                            <select name="cargo-type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Select cargo type</option>
+                                <option value="general">General Cargo</option>
+                                <option value="hazardous">Hazardous Materials</option>
+                                <option value="perishable">Perishable Goods</option>
+                                <option value="oversized">Oversized/Heavy</option>
+                                <option value="containers">Containers</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Estimated Weight</label>
+                            <input type="text" name="weight" placeholder="e.g., 500 kg" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Timeline</label>
+                        <select name="timeline" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Select timeline</option>
+                            <option value="urgent">Urgent (1-3 days)</option>
+                            <option value="standard">Standard (1-2 weeks)</option>
+                            <option value="economy">Economy (3-4 weeks)</option>
+                            <option value="flexible">Flexible</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Additional Details</label>
+                        <textarea name="details" rows="3" placeholder="Please provide any additional information about your shipment requirements..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <button type="button" onclick="closeQuoteModal()" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition duration-300">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300">
+                            <i class="fas fa-paper-plane mr-2"></i>Send Quote Request
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Success Message -->
+                <div id="quote-success" class="hidden text-center py-8">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-check text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Quote Request Sent!</h3>
+                    <p class="text-gray-600">Thank you for your interest. We'll get back to you within 24 hours with a detailed quote.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" title="Back to Top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Performance Optimization Script -->
+    <script src="js/performance-optimizer.js" defer></script>
+</body>
+</html>

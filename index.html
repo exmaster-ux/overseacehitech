@@ -1,0 +1,2553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVERSEACE HITECH INDUSTRIAL COMPANY LIMITED</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Performance Optimization Meta Tags -->
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
+    <style>
+        /* Lazy Loading Styles */
+        img[data-lazy="true"] {
+            transition: filter 0.3s ease, opacity 0.3s ease;
+        }
+
+        img.loaded {
+            filter: none !important;
+            opacity: 1;
+        }
+
+        img.error {
+            background: #f3f4f6;
+            color: #9ca3af;
+        }
+
+        .video-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #2563eb;
+            font-size: 24px;
+            z-index: 10;
+        }
+
+        /* Progressive Loading Animation */
+        .fade-in-lazy {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in-lazy.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hero {
+            position: relative;
+            height: 80vh;
+            overflow: hidden;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-nav {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+
+        .hero-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .hero-dot.active {
+            background: white;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 24px;
+            height: calc(100% - 24px);
+            width: 2px;
+            background: #3b82f6;
+        }
+
+        .map-container {
+            overflow: hidden;
+            padding-bottom: 56.25%;
+            position: relative;
+            height: 0;
+        }
+
+        .map-container iframe {
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+
+        .animate-bounce-slow {
+            animation: bounce 3s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translate(0,  0px); }
+            50%  { transform: translate(0, 15px); }
+            100%   { transform: translate(0, -0px); }
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 55px;
+            height: 55px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.8);
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        .back-to-top:active {
+            transform: translateY(-1px) scale(0.95);
+        }
+
+        /* Quote Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 20px;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease-out;
+            position: relative;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Comprehensive responsive design for all screen sizes */
+
+        /* Extra Large screens (1536px and up) */
+        @media (min-width: 1536px) {
+            .container {
+                max-width: 1400px;
+            }
+
+            .hero {
+                height: 90vh;
+            }
+
+            .hero-content h1 {
+                font-size: 4.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* Large screens (1024px to 1535px) */
+        @media (min-width: 1024px) and (max-width: 1535px) {
+            .hero {
+                height: 85vh;
+            }
+        }
+
+        /* Medium screens (768px to 1023px) */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .hero {
+                height: 75vh;
+            }
+
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+
+            .hero-content p {
+                font-size: 1.25rem;
+            }
+
+            .timeline-item {
+                margin-bottom: 2rem;
+            }
+        }
+
+        /* Small screens (640px to 767px) */
+        @media (min-width: 640px) and (max-width: 767px) {
+            .hero {
+                height: 70vh;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
+
+            .hero-content p {
+                font-size: 1.125rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .contact-banner-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .contact-banner-item .text-left {
+                text-align: center;
+            }
+        }
+
+        /* Mobile screens (below 640px) */
+        @media (max-width: 639px) {
+            .hero {
+                height: 60vh;
+                min-height: 500px;
+            }
+
+            .hero-content {
+                padding: 1rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+                line-height: 1.2;
+                margin-bottom: 1rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+                line-height: 1.5;
+            }
+
+            .hero-nav {
+                bottom: 15px;
+            }
+
+            .hero-dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            /* Header optimizations */
+            .header-logo img {
+                width: 60px;
+                height: 60px;
+            }
+
+            .header-logo h1 {
+                font-size: 1rem;
+            }
+
+            .header-logo p {
+                font-size: 0.7rem;
+            }
+
+            /* Contact banner mobile layout */
+            .contact-banner-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .contact-banner-item {
+                flex-direction: row;
+                justify-content: flex-start;
+                text-align: left;
+                padding: 0.75rem;
+            }
+
+            .contact-banner-item .bg-blue-700 {
+                flex-shrink: 0;
+            }
+
+            .contact-banner-item div:last-child {
+                text-align: left;
+            }
+
+            .contact-banner-item h4 {
+                font-size: 0.9rem;
+            }
+
+            .contact-banner-item p {
+                font-size: 0.8rem;
+                line-height: 1.3;
+            }
+
+            /* Section titles */
+            .section-title {
+                font-size: 1.75rem;
+                line-height: 1.3;
+            }
+
+            .section-subtitle {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+
+            /* About section mobile */
+            .about-content {
+                padding: 1.5rem;
+            }
+
+            .about-content p {
+                font-size: 0.9rem;
+                line-height: 1.6;
+                margin-bottom: 1rem;
+            }
+
+            /* Timeline mobile optimization */
+            .timeline-mobile {
+                padding-left: 0;
+            }
+
+            .timeline-item-mobile {
+                border-left: 2px solid #3b82f6;
+                padding-left: 1rem;
+                margin-bottom: 2rem;
+                position: relative;
+            }
+
+            .timeline-item-mobile::before {
+                content: '';
+                position: absolute;
+                left: -6px;
+                top: 0;
+                width: 10px;
+                height: 10px;
+                background: #3b82f6;
+                border-radius: 50%;
+            }
+
+            /* Services grid mobile */
+            .services-grid-mobile {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .service-card-mobile {
+                margin-bottom: 1rem;
+            }
+
+            .service-card-mobile .h-48 {
+                height: 120px;
+            }
+
+            .service-card-mobile i {
+                font-size: 2.5rem;
+            }
+
+            .service-card-mobile h3 {
+                font-size: 1.1rem;
+            }
+
+            .service-card-mobile p {
+                font-size: 0.85rem;
+                line-height: 1.5;
+            }
+
+            /* Why choose us mobile */
+            .why-choose-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .why-choose-card {
+                padding: 1rem;
+            }
+
+            .why-choose-card h5 {
+                font-size: 0.9rem;
+            }
+
+            .why-choose-card p {
+                font-size: 0.8rem;
+                line-height: 1.4;
+            }
+        }
+
+        /* Extra small screens (below 480px) */
+        @media (max-width: 479px) {
+            .hero {
+                height: 55vh;
+                min-height: 450px;
+            }
+
+            .hero-content h1 {
+                font-size: 1.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .hero-content p {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .hero-button {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            /* Header extra small */
+            .header-logo img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .header-logo h1 {
+                font-size: 0.9rem;
+            }
+
+            .header-logo p {
+                font-size: 0.65rem;
+            }
+
+            /* Contact banner extra small */
+            .contact-banner-item h4 {
+                font-size: 0.8rem;
+            }
+
+            .contact-banner-item p {
+                font-size: 0.75rem;
+            }
+
+            /* Section padding */
+            .section-padding {
+                padding: 2rem 0;
+            }
+
+            /* Modal extra small */
+            .modal-content {
+                margin: 5px;
+                width: calc(100% - 10px);
+                max-height: 95vh;
+            }
+
+            .modal-header {
+                padding: 1rem;
+            }
+
+            .modal-body {
+                padding: 1rem;
+            }
+
+            .modal-header h3 {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Back to top responsive */
+        @media (max-width: 768px) {
+            .back-to-top {
+                bottom: 15px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .back-to-top {
+                bottom: 10px;
+                right: 10px;
+                width: 45px;
+                height: 45px;
+                font-size: 16px;
+            }
+        }
+
+        /* Text overflow prevention */
+        .text-responsive {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .text-ellipsis-mobile {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 640px) {
+            .text-ellipsis-mobile {
+                white-space: normal;
+                line-height: 1.4;
+            }
+        }
+
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .back-to-top {
+                box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+            }
+        }
+
+        /* Parallax Scrolling */
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+
+        .parallax-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+        }
+
+        .parallax-content {
+            position: relative;
+            z-index: 10;
+        }
+
+
+
+        /* Hero Slider Styles */
+        .hero {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-nav {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+
+        .hero-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hero-dot.active,
+        .hero-dot:hover {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        /* Parallax Scrolling */
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+
+        .parallax-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+        }
+
+        .parallax-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Services title adaptive styling */
+        .services-title-adaptive {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        /* Mobile responsiveness for parallax */
+        @media (max-width: 768px) {
+            .parallax-bg {
+                background-attachment: scroll;
+            }
+
+            .back-to-top {
+                bottom: 15px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+            }
+
+            .modal-content {
+                margin: 10px;
+                width: calc(100% - 20px);
+            }
+
+            .modal-header {
+                padding: 15px 20px;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .back-to-top {
+                bottom: 10px;
+                right: 10px;
+                width: 45px;
+                height: 45px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Header/Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-2 sm:px-4 py-2 sm:py-3 flex justify-between items-center">
+            <div class="header-logo flex items-center cursor-pointer" onclick="window.location.href='index.html'">
+                <img src="images/company-logo/company-logo.png" alt="OVERSEACE HITECH Logo" class="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain mr-2 sm:mr-4">
+                <div class="text-responsive">
+                    <h1 class="text-sm sm:text-lg lg:text-xl font-bold text-blue-800 leading-tight">OVERSEACE HITECH</h1>
+                    <p class="text-xs sm:text-xs lg:text-xs text-gray-600 leading-tight">Industrial Company Limited</p>
+                </div>
+            </div>
+
+            <button id="menu-toggle" class="md:hidden focus:outline-none p-2">
+                <i class="fas fa-bars text-xl sm:text-2xl text-blue-800"></i>
+            </button>
+
+            <nav class="hidden md:flex space-x-4 lg:space-x-8 items-center">
+                <a href="#home" class="text-blue-800 font-medium hover:text-blue-600 transition text-sm lg:text-base">Home</a>
+                <a href="#about" class="text-gray-700 font-medium hover:text-blue-600 transition text-sm lg:text-base">About</a>
+                <a href="services.html" class="text-gray-700 font-medium hover:text-blue-600 transition text-sm lg:text-base">Services</a>
+                <a href="gallery.html" class="text-gray-700 font-medium hover:text-blue-600 transition text-sm lg:text-base">Gallery</a>
+                <a href="#team" class="text-gray-700 font-medium hover:text-blue-600 transition text-sm lg:text-base">Team</a>
+                <a href="#contact" class="text-gray-700 font-medium hover:text-blue-600 transition text-sm lg:text-base">Contact</a>
+                <button onclick="openQuoteModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 lg:px-4 rounded-full transition duration-300 transform hover:scale-105 text-sm lg:text-base">
+                    <span class="hidden lg:inline">Get A Quote</span>
+                    <span class="lg:hidden">Quote</span>
+                    <i class="fas fa-calculator ml-1"></i>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white py-2 px-4 shadow-lg">
+            <div class="flex flex-col space-y-3">
+                <a href="#home" class="text-blue-800 font-medium hover:text-blue-600 transition py-2 text-base">Home</a>
+                <a href="#about" class="text-gray-700 font-medium hover:text-blue-600 transition py-2 text-base">About</a>
+                <a href="services.html" class="text-gray-700 font-medium hover:text-blue-600 transition py-2 text-base">Services</a>
+                <a href="gallery.html" class="text-gray-700 font-medium hover:text-blue-600 transition py-2 text-base">Gallery</a>
+                <a href="#team" class="text-gray-700 font-medium hover:text-blue-600 transition py-2 text-base">Team</a>
+                <a href="#contact" class="text-gray-700 font-medium hover:text-blue-600 transition py-2 text-base">Contact</a>
+                <button onclick="openQuoteModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-full transition duration-300 text-center w-full text-base">
+                    Get A Quote <i class="fas fa-calculator ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero flex items-center justify-center text-white">
+        <!-- Hero Slides -->
+        <div class="hero-slide active" style="background-image: url('images/hero/hero-slide-1.jpg');"></div>
+        <div class="hero-slide" style="background-image: url('images/hero/hero-slide-2.jpg');"></div>
+        <div class="hero-slide" style="background-image: url('images/hero/hero-slide-3.jpg');"></div>
+        <div class="hero-slide" style="background-image: url('images/hero/hero-slide-4.jpg');"></div>
+
+        <!-- Hero Content -->
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center hero-content">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 animate-bounce-slow text-responsive leading-tight">
+                Your Trusted Logistics Partner
+            </h1>
+            <p class="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 max-w-xs sm:max-w-2xl lg:max-w-3xl mx-auto text-responsive leading-relaxed">
+                Providing exceptional clearing, forwarding, and logistics services across Tanzania and East Africa
+            </p>
+            <div class="hero-buttons flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4 sm:px-0">
+                <a href="#contact" class="hero-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 sm:px-8 rounded-full transition duration-300 transform hover:scale-105 text-sm sm:text-base">
+                    Contact Us <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+                <a href="#services" class="hero-button bg-transparent hover:bg-white hover:text-blue-800 text-white font-bold py-3 px-6 sm:px-8 border-2 border-white rounded-full transition duration-300 transform hover:scale-105 text-sm sm:text-base">
+                    Our Services <i class="fas fa-cogs ml-2"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Hero Navigation Dots -->
+        <div class="hero-nav">
+            <div class="hero-dot active" onclick="currentSlide(1)"></div>
+            <div class="hero-dot" onclick="currentSlide(2)"></div>
+            <div class="hero-dot" onclick="currentSlide(3)"></div>
+            <div class="hero-dot" onclick="currentSlide(4)"></div>
+        </div>
+    </section>
+
+    <!-- Contact Banner -->
+    <section class="py-6 sm:py-8 bg-blue-800 text-white">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="contact-banner-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <!-- Contact Info -->
+                <div class="contact-banner-item flex items-center justify-center sm:justify-start space-x-3 sm:space-x-4 bg-blue-700 bg-opacity-30 p-3 sm:p-4 rounded-lg">
+                    <div class="bg-blue-700 p-2 sm:p-3 rounded-full flex-shrink-0">
+                        <i class="fas fa-phone-alt text-white text-lg sm:text-xl"></i>
+                    </div>
+                    <div class="text-left min-w-0 flex-1">
+                        <h4 class="font-bold text-sm sm:text-base lg:text-lg text-responsive">Contact Us</h4>
+                        <p class="text-blue-200 text-xs sm:text-sm text-responsive">+255 717 225 030</p>
+                        <p class="text-blue-200 text-xs sm:text-sm text-ellipsis-mobile">mudyhajixpro@gmail.com</p>
+                    </div>
+                </div>
+
+                <!-- Location Info -->
+                <div class="contact-banner-item flex items-center justify-center sm:justify-start space-x-3 sm:space-x-4 bg-blue-700 bg-opacity-30 p-3 sm:p-4 rounded-lg">
+                    <div class="bg-blue-700 p-2 sm:p-3 rounded-full flex-shrink-0">
+                        <i class="fas fa-map-marker-alt text-white text-lg sm:text-xl"></i>
+                    </div>
+                    <div class="text-left min-w-0 flex-1">
+                        <h4 class="font-bold text-sm sm:text-base lg:text-lg text-responsive">Our Location</h4>
+                        <p class="text-blue-200 text-xs sm:text-sm text-responsive">Office Nr 12 On Floor Nr 2</p>
+                        <p class="text-blue-200 text-xs sm:text-sm text-responsive leading-tight">PSSSF Samora House, Junction of Samora and Morogoro Rd</p>
+                    </div>
+                </div>
+
+                <!-- Operating Hours -->
+                <div class="contact-banner-item flex items-center justify-center sm:justify-start space-x-3 sm:space-x-4 bg-blue-700 bg-opacity-30 p-3 sm:p-4 rounded-lg sm:col-span-2 lg:col-span-1">
+                    <div class="bg-blue-700 p-2 sm:p-3 rounded-full flex-shrink-0">
+                        <i class="fas fa-clock text-white text-lg sm:text-xl"></i>
+                    </div>
+                    <div class="text-left min-w-0 flex-1">
+                        <h4 class="font-bold text-sm sm:text-base lg:text-lg text-responsive">Operating Hours</h4>
+                        <p class="text-blue-200 text-xs sm:text-sm text-responsive">Monday - Friday</p>
+                        <p class="text-blue-200 text-xs sm:text-sm text-responsive">8:00 AM - 5:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section-padding py-12 sm:py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 sm:mb-16">
+                <h2 class="section-title text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-800 mb-4 text-responsive">About Us</h2>
+                <div class="w-16 sm:w-20 h-1 bg-blue-600 mx-auto"></div>
+            </div>
+
+            <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+                <div class="w-full lg:w-1/2">
+                    <div class="about-content bg-blue-50 p-6 sm:p-8 rounded-xl shadow-lg floating">
+                        <p class="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base lg:text-lg leading-relaxed text-responsive">
+                            OVERSEACE HITECH INDUSTRIAL COMPANY LTD is a distinguished Tanzanian logistics company based in Dar es Salaam, specializing in comprehensive clearing, forwarding, and logistics solutions. Since our establishment in 2013, we have strategically positioned ourselves as a key partner for businesses utilizing the Dar es Salaam Port.
+                        </p>
+                        <p class="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed text-responsive">
+                            Our strategic location enables us to serve not only Tanzania's 50+ million population but also the landlocked countries of Malawi, Zambia, Botswana, Zimbabwe, Democratic Republic of Congo, Burundi, Rwanda, and Uganda. We extend our services to customers using Julius Nyerere International Airport, providing seamless customs clearance for both import and export operations.
+                        </p>
+                        <p class="text-gray-700 text-sm sm:text-base leading-relaxed text-responsive">
+                            With over a decade of experience, we have built a reputation for reliability, efficiency, and customer satisfaction in the East African logistics landscape.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="w-full lg:w-1/2 mt-8 lg:mt-0">
+                    <div class="bg-gray-100 p-6 sm:p-8 rounded-xl shadow-lg">
+                        <div class="flex items-start mb-6 sm:mb-8">
+                            <div class="bg-blue-100 p-2 sm:p-3 rounded-full mr-3 sm:mr-4 flex-shrink-0">
+                                <i class="fas fa-eye text-blue-600 text-lg sm:text-xl"></i>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h4 class="text-lg sm:text-xl font-bold text-blue-800 mb-2 text-responsive">Our Vision</h4>
+                                <p class="text-gray-700 text-sm sm:text-base leading-relaxed text-responsive">
+                                    To modernize clearing, forwarding, and logistics services by offering products and services that are clearly exceptional in terms of innovation, quality, delivery, and value consistently across East Africa.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-2 sm:p-3 rounded-full mr-3 sm:mr-4 flex-shrink-0">
+                                <i class="fas fa-bullseye text-blue-600 text-lg sm:text-xl"></i>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h4 class="text-lg sm:text-xl font-bold text-blue-800 mb-2 text-responsive">Our Mission</h4>
+                                <p class="text-gray-700 text-sm sm:text-base leading-relaxed text-responsive">
+                                    We are committed to delivering uncompromising high-quality products and services with competitive pricing and timely delivery. Our goal is to achieve total customer satisfaction while maintaining the highest standards of integrity, trust, and respect in all our business relationships.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company History Section -->
+            <div class="mt-20">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl md:text-4xl font-bold text-blue-800 mb-4">Our Journey</h3>
+                    <div class="w-20 h-1 bg-blue-600 mx-auto mb-6"></div>
+                    <p class="text-gray-700 text-lg max-w-3xl mx-auto">
+                        A decade of growth, innovation, and excellence in logistics services across East Africa.
+                    </p>
+                </div>
+
+                <div class="relative">
+                    <!-- Timeline Line -->
+                    <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-blue-200 hidden lg:block"></div>
+
+                    <!-- Timeline Items -->
+                    <div class="space-y-12">
+                        <!-- 2013 - Company Foundation -->
+                        <div class="flex flex-col lg:flex-row items-center">
+                            <div class="lg:w-1/2 lg:pr-8 mb-8 lg:mb-0">
+                                <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-blue-600">
+                                    <div class="flex items-center mb-4">
+                                        <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                            <i class="fas fa-rocket text-blue-600 text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-xl font-bold text-blue-800">Company Foundation</h4>
+                                            <p class="text-blue-600 font-medium">December 3, 2013</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-700">
+                                        OVERSEACE HITECH INDUSTRIAL COMPANY LIMITED was officially incorporated under Tanzania's Company Act No. 12 of 2002, marking the beginning of our journey in the logistics industry.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hidden lg:block lg:w-8 flex-shrink-0">
+                                <div class="w-8 h-8 bg-blue-600 rounded-full border-4 border-white shadow-lg mx-auto"></div>
+                            </div>
+                            <div class="lg:w-1/2 lg:pl-8"></div>
+                        </div>
+
+                        <!-- 2014 - TRA Accreditation -->
+                        <div class="flex flex-col lg:flex-row-reverse items-center">
+                            <div class="lg:w-1/2 lg:pl-8 mb-8 lg:mb-0">
+                                <div class="bg-white p-6 rounded-xl shadow-lg border-r-4 border-green-600">
+                                    <div class="flex items-center mb-4">
+                                        <div class="bg-green-100 p-3 rounded-full mr-4">
+                                            <i class="fas fa-certificate text-green-600 text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-xl font-bold text-blue-800">TRA Accreditation</h4>
+                                            <p class="text-green-600 font-medium">2014</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-700">
+                                        Achieved official accreditation from Tanzania Revenue Authority (TRA) as a registered customs clearing and forwarding agent, establishing our credibility in the industry.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hidden lg:block lg:w-8 flex-shrink-0">
+                                <div class="w-8 h-8 bg-green-600 rounded-full border-4 border-white shadow-lg mx-auto"></div>
+                            </div>
+                            <div class="lg:w-1/2 lg:pr-8"></div>
+                        </div>
+
+                        <!-- 2016 - Regional Expansion -->
+                        <div class="flex flex-col lg:flex-row items-center">
+                            <div class="lg:w-1/2 lg:pr-8 mb-8 lg:mb-0">
+                                <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-purple-600">
+                                    <div class="flex items-center mb-4">
+                                        <div class="bg-purple-100 p-3 rounded-full mr-4">
+                                            <i class="fas fa-globe-africa text-purple-600 text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-xl font-bold text-blue-800">Regional Expansion</h4>
+                                            <p class="text-purple-600 font-medium">2016</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-700">
+                                        Expanded operations to serve landlocked countries including Burundi, Rwanda, Uganda, and DRC, establishing ourselves as a key logistics partner in East Africa.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hidden lg:block lg:w-8 flex-shrink-0">
+                                <div class="w-8 h-8 bg-purple-600 rounded-full border-4 border-white shadow-lg mx-auto"></div>
+                            </div>
+                            <div class="lg:w-1/2 lg:pl-8"></div>
+                        </div>
+
+                        <!-- 2018 - Fleet Modernization -->
+                        <div class="flex flex-col lg:flex-row-reverse items-center">
+                            <div class="lg:w-1/2 lg:pl-8 mb-8 lg:mb-0">
+                                <div class="bg-white p-6 rounded-xl shadow-lg border-r-4 border-orange-600">
+                                    <div class="flex items-center mb-4">
+                                        <div class="bg-orange-100 p-3 rounded-full mr-4">
+                                            <i class="fas fa-truck text-orange-600 text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-xl font-bold text-blue-800">Fleet Modernization</h4>
+                                            <p class="text-orange-600 font-medium">2018</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-700">
+                                        Invested in modern transportation fleet with GPS tracking systems, enhancing our capability to handle containerized, abnormal, and loose cargo efficiently.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hidden lg:block lg:w-8 flex-shrink-0">
+                                <div class="w-8 h-8 bg-orange-600 rounded-full border-4 border-white shadow-lg mx-auto"></div>
+                            </div>
+                            <div class="lg:w-1/2 lg:pr-8"></div>
+                        </div>
+
+                        <!-- 2020 - Digital Transformation -->
+                        <div class="flex flex-col lg:flex-row items-center">
+                            <div class="lg:w-1/2 lg:pr-8 mb-8 lg:mb-0">
+                                <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-indigo-600">
+                                    <div class="flex items-center mb-4">
+                                        <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                                            <i class="fas fa-laptop text-indigo-600 text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-xl font-bold text-blue-800">Digital Transformation</h4>
+                                            <p class="text-indigo-600 font-medium">2020</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-700">
+                                        Implemented digital systems for cargo tracking, documentation management, and customer service, improving operational efficiency and transparency.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hidden lg:block lg:w-8 flex-shrink-0">
+                                <div class="w-8 h-8 bg-indigo-600 rounded-full border-4 border-white shadow-lg mx-auto"></div>
+                            </div>
+                            <div class="lg:w-1/2 lg:pl-8"></div>
+                        </div>
+
+                        <!-- 2023 - Decade of Excellence -->
+                        <div class="flex flex-col lg:flex-row-reverse items-center">
+                            <div class="lg:w-1/2 lg:pl-8 mb-8 lg:mb-0">
+                                <div class="bg-white p-6 rounded-xl shadow-lg border-r-4 border-yellow-600">
+                                    <div class="flex items-center mb-4">
+                                        <div class="bg-yellow-100 p-3 rounded-full mr-4">
+                                            <i class="fas fa-trophy text-yellow-600 text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-xl font-bold text-blue-800">Decade of Excellence</h4>
+                                            <p class="text-yellow-600 font-medium">2023</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-700">
+                                        Celebrating 10 years of exceptional service with over 500 shipments cleared, 1000+ cargo transported, and 200+ satisfied clients across 8 East African countries.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="hidden lg:block lg:w-8 flex-shrink-0">
+                                <div class="w-8 h-8 bg-yellow-600 rounded-full border-4 border-white shadow-lg mx-auto"></div>
+                            </div>
+                            <div class="lg:w-1/2 lg:pr-8"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Future Vision -->
+                <div class="mt-16 text-center">
+                    <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-8 rounded-xl text-white">
+                        <h4 class="text-2xl font-bold mb-4">Looking Forward</h4>
+                        <p class="text-lg text-blue-100 max-w-3xl mx-auto">
+                            As we continue our journey, we remain committed to innovation, excellence, and expanding our services to meet the evolving needs of our clients across East Africa and beyond.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section-padding py-12 sm:py-16 parallax-bg" style="background-image: url('images/backgrounds/services-bg.jpg');">
+        <div class="parallax-content">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 sm:mb-16">
+                <h2 class="section-title text-2xl sm:text-3xl lg:text-4xl font-bold services-title-adaptive mb-4 text-responsive">Our Services</h2>
+                <div class="w-16 sm:w-20 h-1 bg-white mx-auto mb-6"></div>
+                <p class="section-subtitle text-white text-sm sm:text-base lg:text-lg max-w-xs sm:max-w-2xl lg:max-w-3xl mx-auto text-responsive leading-relaxed">
+                    Comprehensive logistics solutions tailored to meet your business needs across Tanzania and East Africa
+                </p>
+            </div>
+
+            <div class="services-grid-mobile grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto">
+                <!-- Service 1 -->
+                <div class="service-card service-card-mobile bg-white rounded-xl shadow-lg overflow-hidden transition duration-500">
+                    <div class="h-32 sm:h-40 lg:h-48 bg-blue-600 flex items-center justify-center">
+                        <i class="fas fa-passport text-white text-4xl sm:text-5xl lg:text-6xl"></i>
+                    </div>
+                    <div class="p-4 sm:p-6">
+                        <h3 class="text-lg sm:text-xl font-bold text-blue-800 mb-3 text-responsive">Forwarding and Clearing</h3>
+                        <p class="text-gray-700 mb-4 text-sm sm:text-base leading-relaxed text-responsive">
+                            Accredited by the Tanzania Revenue Authority as registered customs clearing and forwarding agent, we offer comprehensive customs clearance services including documentation, carting/receiving goods, and examination of shipments.
+                        </p>
+                        <ul class="text-gray-700 space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-500 mt-1 mr-2 flex-shrink-0"></i>
+                                <span class="text-sm sm:text-base text-responsive">Customs Documentation</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-500 mt-1 mr-2 flex-shrink-0"></i>
+                                <span class="text-sm sm:text-base text-responsive">Carting/Receiving Goods</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-500 mt-1 mr-2 flex-shrink-0"></i>
+                                <span class="text-sm sm:text-base text-responsive">Examination of Shipment</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card service-card-mobile bg-white rounded-xl shadow-lg overflow-hidden transition duration-500">
+                    <div class="h-32 sm:h-40 lg:h-48 bg-blue-800 flex items-center justify-center">
+                        <i class="fas fa-truck text-white text-4xl sm:text-5xl lg:text-6xl"></i>
+                    </div>
+                    <div class="p-4 sm:p-6">
+                        <h3 class="text-lg sm:text-xl font-bold text-blue-800 mb-3 text-responsive">Transportation</h3>
+                        <p class="text-gray-700 mb-4 text-sm sm:text-base leading-relaxed text-responsive">
+                            As the center and hub of all logistics services around East African countries, we transport different cargo in and outside Tanzania including containerized cargo, abnormal cargo and loose cargo.
+                        </p>
+                        <ul class="text-gray-700 space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-500 mt-1 mr-2 flex-shrink-0"></i>
+                                <span class="text-sm sm:text-base text-responsive">Containerized cargo transport</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-500 mt-1 mr-2 flex-shrink-0"></i>
+                                <span class="text-sm sm:text-base text-responsive">Abnormal cargo handling</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-500 mt-1 mr-2 flex-shrink-0"></i>
+                                <span class="text-sm sm:text-base text-responsive">GPS tracked fleet</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View More Button -->
+            <div class="text-center mt-8 sm:mt-12">
+                <a href="services.html" class="inline-flex items-center bg-white hover:bg-gray-100 text-blue-800 font-bold py-3 px-6 sm:px-8 rounded-full transition duration-300 transform hover:scale-105 shadow-lg text-sm sm:text-base">
+                    View More Services
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+
+        </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="section-padding py-12 sm:py-16 parallax-bg" style="background-image: url('images/backgrounds/why-choose-us-bg.jpg');">
+        <div class="parallax-content">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 sm:mb-16">
+                    <h2 class="section-title text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 text-responsive">Why Choose Us</h2>
+                    <div class="w-16 sm:w-20 h-1 bg-white mx-auto mb-6"></div>
+                    <p class="section-subtitle text-white text-sm sm:text-base lg:text-lg max-w-xs sm:max-w-2xl lg:max-w-3xl mx-auto text-responsive leading-relaxed">
+                        Discover what sets OVERSEACE HITECH apart as your preferred logistics partner in East Africa
+                    </p>
+                </div>
+
+                <div class="why-choose-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+                    <!-- Advanced Technology -->
+                    <div class="why-choose-card text-center bg-white bg-opacity-90 p-4 sm:p-6 rounded-xl shadow-lg">
+                        <div class="bg-blue-100 p-3 sm:p-4 rounded-lg w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 flex items-center justify-center">
+                            <i class="fas fa-satellite-dish text-blue-600 text-lg sm:text-2xl"></i>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-2 text-sm sm:text-base text-responsive">Advanced Technology</h5>
+                        <p class="text-gray-600 text-xs sm:text-sm text-responsive leading-relaxed">Modern fleet equipped with GPS tracking for real-time monitoring and efficient service delivery</p>
+                    </div>
+
+                    <!-- Proven Experience -->
+                    <div class="why-choose-card text-center bg-white bg-opacity-90 p-4 sm:p-6 rounded-xl shadow-lg">
+                        <div class="bg-blue-100 p-3 sm:p-4 rounded-lg w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 flex items-center justify-center">
+                            <i class="fas fa-award text-blue-600 text-lg sm:text-2xl"></i>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-2 text-sm sm:text-base text-responsive">Proven Track Record</h5>
+                        <p class="text-gray-600 text-xs sm:text-sm text-responsive leading-relaxed">Successfully served Government Ministries, NGOs, International Agencies, and Private Enterprises</p>
+                    </div>
+
+                    <!-- TRA Accredited -->
+                    <div class="why-choose-card text-center bg-white bg-opacity-90 p-4 sm:p-6 rounded-xl shadow-lg">
+                        <div class="bg-blue-100 p-3 sm:p-4 rounded-lg w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 flex items-center justify-center">
+                            <i class="fas fa-certificate text-blue-600 text-lg sm:text-2xl"></i>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-2 text-sm sm:text-base text-responsive">TRA Accredited</h5>
+                        <p class="text-gray-600 text-xs sm:text-sm text-responsive leading-relaxed">Officially registered and accredited customs clearing agent with full compliance</p>
+                    </div>
+
+                    <!-- Strategic Location -->
+                    <div class="why-choose-card text-center bg-white bg-opacity-90 p-4 sm:p-6 rounded-xl shadow-lg">
+                        <div class="bg-blue-100 p-3 sm:p-4 rounded-lg w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 flex items-center justify-center">
+                            <i class="fas fa-map-marked-alt text-blue-600 text-lg sm:text-2xl"></i>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-2 text-sm sm:text-base text-responsive">Strategic Location</h5>
+                        <p class="text-gray-600 text-xs sm:text-sm text-responsive leading-relaxed">Prime location in Dar es Salaam with easy access to port and airport facilities</p>
+                    </div>
+
+                    <!-- 24/7 Support -->
+                    <div class="why-choose-card text-center bg-white bg-opacity-90 p-4 sm:p-6 rounded-xl shadow-lg">
+                        <div class="bg-blue-100 p-3 sm:p-4 rounded-lg w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 flex items-center justify-center">
+                            <i class="fas fa-headset text-blue-600 text-lg sm:text-2xl"></i>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-2 text-sm sm:text-base text-responsive">24/7 Customer Support</h5>
+                        <p class="text-gray-600 text-xs sm:text-sm text-responsive leading-relaxed">Round-the-clock customer service to ensure your logistics needs are always met</p>
+                    </div>
+
+                    <!-- Competitive Pricing -->
+                    <div class="why-choose-card text-center bg-white bg-opacity-90 p-4 sm:p-6 rounded-xl shadow-lg">
+                        <div class="bg-blue-100 p-3 sm:p-4 rounded-lg w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 flex items-center justify-center">
+                            <i class="fas fa-dollar-sign text-blue-600 text-lg sm:text-2xl"></i>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-2 text-sm sm:text-base text-responsive">Competitive Pricing</h5>
+                        <p class="text-gray-600 text-xs sm:text-sm text-responsive leading-relaxed">Cost-effective solutions without compromising on quality and service excellence</p>
+                    </div>
+
+                    <!-- Regional Coverage -->
+                    <div class="why-choose-card text-center bg-white bg-opacity-90 p-4 sm:p-6 rounded-xl shadow-lg">
+                        <div class="bg-blue-100 p-3 sm:p-4 rounded-lg w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 flex items-center justify-center">
+                            <i class="fas fa-globe-africa text-blue-600 text-lg sm:text-2xl"></i>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-2 text-sm sm:text-base text-responsive">Regional Coverage</h5>
+                        <p class="text-gray-600 text-xs sm:text-sm text-responsive leading-relaxed">Extensive network covering Tanzania and 8 East African countries</p>
+                    </div>
+
+                    <!-- Expert Team -->
+                    <div class="why-choose-card text-center bg-white bg-opacity-90 p-4 sm:p-6 rounded-xl shadow-lg">
+                        <div class="bg-blue-100 p-3 sm:p-4 rounded-lg w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 flex items-center justify-center">
+                            <i class="fas fa-users text-blue-600 text-lg sm:text-2xl"></i>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-2 text-sm sm:text-base text-responsive">Expert Team</h5>
+                        <p class="text-gray-600 text-xs sm:text-sm text-responsive leading-relaxed">Highly qualified professionals with years of experience in logistics and customs</p>
+                    </div>
+
+                    <!-- Fast Processing -->
+                    <div class="why-choose-card text-center bg-white bg-opacity-90 p-4 sm:p-6 rounded-xl shadow-lg">
+                        <div class="bg-blue-100 p-3 sm:p-4 rounded-lg w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 flex items-center justify-center">
+                            <i class="fas fa-tachometer-alt text-blue-600 text-lg sm:text-2xl"></i>
+                        </div>
+                        <h5 class="font-bold text-gray-800 mb-2 text-sm sm:text-base text-responsive">Fast Processing</h5>
+                        <p class="text-gray-600 text-xs sm:text-sm text-responsive leading-relaxed">Efficient processing times to minimize delays and keep your business moving</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Client Success Stories Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-800 mb-4">Client Success Stories</h2>
+                <div class="w-20 h-1 bg-blue-600 mx-auto mb-6"></div>
+                <p class="text-gray-700 text-lg max-w-3xl mx-auto">
+                    Discover how we've helped our clients achieve their logistics goals with our comprehensive services and expertise.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Success Story 1: Burundi Cement Company -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300 flex flex-col">
+                    <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-white bg-opacity-20 p-3 rounded-full mr-4">
+                                <i class="fas fa-industry text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Burundi Cement Company</h3>
+                        </div>
+                        <div class="bg-white bg-opacity-10 px-4 py-2 rounded-full inline-block">
+                            <span class="text-white text-sm font-medium">Industrial Materials</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h4 class="text-lg font-bold text-blue-800 mb-3">Project Overview</h4>
+                        <p class="text-gray-700 mb-4">
+                            Comprehensive logistics solution for coal and gypsum transportation from Dar es Salaam Port to Burundi.
+                        </p>
+                        <div class="space-y-3 flex-1">
+                            <div class="flex items-start">
+                                <i class="fas fa-truck text-blue-600 mt-1 mr-3"></i>
+                                <span class="text-gray-700 text-sm">Transportation of coal and gypsum</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-boxes text-blue-600 mt-1 mr-3"></i>
+                                <span class="text-gray-700 text-sm">Loading and offloading services</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-passport text-blue-600 mt-1 mr-3"></i>
+                                <span class="text-gray-700 text-sm">Clearing and forwarding services</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <span class="text-green-600 font-bold text-sm">Project Completed</span>
+                                <i class="fas fa-check-circle text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Story 2: State Mining Corporation -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300 flex flex-col">
+                    <div class="bg-gradient-to-r from-gray-700 to-gray-900 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-white bg-opacity-20 p-3 rounded-full mr-4">
+                                <i class="fas fa-mountain text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">State Mining Corporation</h3>
+                        </div>
+                        <div class="bg-white bg-opacity-10 px-4 py-2 rounded-full inline-block">
+                            <span class="text-white text-sm font-medium">Mining & Coal</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h4 class="text-lg font-bold text-blue-800 mb-3">Project Overview</h4>
+                        <p class="text-gray-700 mb-4">
+                            Specialized coal transportation and shunting operations for state mining operations.
+                        </p>
+                        <div class="space-y-3 flex-1">
+                            <div class="flex items-start">
+                                <i class="fas fa-truck text-blue-600 mt-1 mr-3"></i>
+                                <span class="text-gray-700 text-sm">Transportation of coal</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-exchange-alt text-blue-600 mt-1 mr-3"></i>
+                                <span class="text-gray-700 text-sm">Coal shunting operations</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-shield-alt text-blue-600 mt-1 mr-3"></i>
+                                <span class="text-gray-700 text-sm">Safety compliance management</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <span class="text-green-600 font-bold text-sm">Project Completed</span>
+                                <i class="fas fa-check-circle text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Story 3: Heya Cereals and Nut Limited -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300 flex flex-col">
+                    <div class="bg-gradient-to-r from-green-600 to-green-800 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-white bg-opacity-20 p-3 rounded-full mr-4">
+                                <i class="fas fa-seedling text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Heya Cereals and Nut Limited</h3>
+                        </div>
+                        <div class="bg-white bg-opacity-10 px-4 py-2 rounded-full inline-block">
+                            <span class="text-white text-sm font-medium">Agriculture & Food</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h4 class="text-lg font-bold text-blue-800 mb-3">Project Overview</h4>
+                        <p class="text-gray-700 mb-4">
+                            Complete supply chain management for maize distribution across East Africa.
+                        </p>
+                        <div class="space-y-3 flex-1">
+                            <div class="flex items-start">
+                                <i class="fas fa-leaf text-blue-600 mt-1 mr-3"></i>
+                                <span class="text-gray-700 text-sm">Supplying of maize</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-truck text-blue-600 mt-1 mr-3"></i>
+                                <span class="text-gray-700 text-sm">Transportation of maize</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-passport text-blue-600 mt-1 mr-3"></i>
+                                <span class="text-gray-700 text-sm">Clearing and forwarding service</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <span class="text-green-600 font-bold text-sm">Project Completed</span>
+                                <i class="fas fa-check-circle text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="text-center mt-12">
+                <p class="text-gray-700 text-lg mb-6">Ready to become our next success story?</p>
+                <button onclick="openQuoteModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                    Start Your Project <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Operating Legal Status Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-800 mb-4">Operating Legal Status</h2>
+                <div class="w-20 h-1 bg-blue-600 mx-auto mb-6"></div>
+                <p class="text-gray-700 text-lg max-w-4xl mx-auto">
+                    Overseace Hitech Industrial Company Limited is a company registered under the Tanzania's Company Act No. 12 of 2002 and was duly incorporated on 3rd day of December 2013 with company reg No. 104318 and accredited with Tanzania Revenue Authority (TRA) and other business licensing authorities.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-blue-50 p-8 rounded-xl shadow-lg text-center">
+                    <div class="text-blue-600 text-5xl mb-6">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-blue-800 mb-3">Established</h4>
+                    <p class="text-gray-700 text-lg">3rd December 2013</p>
+                    <p class="text-gray-600 text-sm mt-2">Over 10 years of excellence</p>
+                </div>
+
+                <div class="bg-blue-50 p-8 rounded-xl shadow-lg text-center">
+                    <div class="text-blue-600 text-5xl mb-6">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-blue-800 mb-3">Registration</h4>
+                    <p class="text-gray-700 text-lg">Company Reg No. 104318</p>
+                    <p class="text-gray-600 text-sm mt-2">Legally incorporated entity</p>
+                </div>
+
+                <div class="bg-blue-50 p-8 rounded-xl shadow-lg text-center">
+                    <div class="text-blue-600 text-5xl mb-6">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-blue-800 mb-3">Compliance</h4>
+                    <p class="text-gray-700 text-lg">TRA Accredited</p>
+                    <p class="text-gray-600 text-sm mt-2">Fully compliant operations</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  <!-- Team Section -->
+<section id="team" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-blue-800 mb-4">Our Team</h2>
+            <div class="w-20 h-1 bg-blue-600 mx-auto"></div>
+        </div>
+
+        <div class="mb-12 bg-blue-50 p-8 rounded-xl shadow-lg">
+            <h3 class="text-2xl font-bold text-blue-800 mb-6 text-center">Organisation Structure</h3>
+            <p class="text-gray-700 mb-6 text-center max-w-4xl mx-auto">
+                We owe the enormous growth of our company to our Mentor, Mr. Ernest Mwakasenga, who has helped us achieve milestones of success. His entrepreneurial competency, timely guidance and team building efforts have helped us understand the clients' requirements precisely.
+            </p>
+
+            <div class="flex justify-center mt-8">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center max-w-md">
+                    <div class="w-64 h-64 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">
+                        <img src="images/team/ernest-mwakasenga.png" 
+                             alt="Ernest G. Mwakasenga - Managing Director" 
+                             class="w-full h-full object-cover"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-full h-full bg-blue-100 rounded-full flex items-center justify-center" style="display: none;">
+                            <i class="fas fa-user-tie text-blue-600 text-4xl"></i>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold text-blue-800 mb-1">Ernest G. Mwakasenga</h4>
+                    <p class="text-blue-600 font-medium mb-2">Managing Director</p>
+                    <p class="text-sm text-gray-600"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+         
+
+
+
+<!-- Team Member 2 -->
+<div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 team-member-card">
+    <div class="h-64 bg-gray-100 overflow-hidden">
+        <img src="images/team/wendo-kaisi.png" 
+             alt="Wendo Kaisi - Accountant" 
+             class="w-full h-full object-contain bg-gray-50 hover:scale-105 transition duration-300"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <!-- Fallback if image fails to load -->
+        <div class="w-full h-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center" style="display: none;">
+            <div class="text-center">
+                <div class="w-20 h-20 bg-green-600 rounded-full mx-auto mb-3 flex items-center justify-center">
+                    <i class="fas fa-calculator text-white text-2xl"></i>
+                </div>
+                <div class="bg-green-600 text-white px-3 py-1 rounded-full text-sm">
+                    Accountant
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="p-6">
+        <h3 class="text-xl font-bold text-blue-800 mb-1">Wendo Kaisi</h3>
+        <p class="text-blue-600 font-medium mb-3">Accountant</p>
+        <p class="text-sm text-gray-700">Managing financial operations and ensuring accurate accounting practices.</p>
+    </div>
+</div>
+
+<!-- Team Member 3 -->
+<div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 team-member-card">
+    <div class="h-64 bg-gray-100 overflow-hidden">
+        <img src="images/team/fatma-mmwamtemi.png" 
+             alt="Fatma Mmwamtemi - Operations Officer" 
+             class="w-full h-full object-contain bg-gray-50 hover:scale-105 transition duration-300"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <!-- Fallback if image fails to load -->
+        <div class="w-full h-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center" style="display: none;">
+            <div class="text-center">
+                <div class="w-20 h-20 bg-purple-600 rounded-full mx-auto mb-3 flex items-center justify-center">
+                    <i class="fas fa-cogs text-white text-2xl"></i>
+                </div>
+                <div class="bg-purple-600 text-white px-3 py-1 rounded-full text-sm">
+                    Operations
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="p-6">
+        <h3 class="text-xl font-bold text-blue-800 mb-1">Fatma Mmwamtemi</h3>
+        <p class="text-blue-600 font-medium mb-3">Operations Officer</p>
+        <p class="text-sm text-gray-700">Overseeing daily operations and ensuring smooth logistics processes.</p>
+    </div>
+</div>
+
+<!-- Team Member 4 -->
+<div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 team-member-card">
+    <div class="h-64 bg-gray-100 overflow-hidden">
+        <img src="images/team/saumu-shabani.png" 
+             alt="Saumu Shabani - Operations Officer" 
+             class="w-full h-full object-contain bg-gray-50 hover:scale-105 transition duration-300"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <!-- Fallback if image fails to load -->
+        <div class="w-full h-full bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center" style="display: none;">
+            <div class="text-center">
+                <div class="w-20 h-20 bg-pink-600 rounded-full mx-auto mb-3 flex items-center justify-center">
+                    <i class="fas fa-tasks text-white text-2xl"></i>
+                </div>
+                <div class="bg-pink-600 text-white px-3 py-1 rounded-full text-sm">
+                    Operations
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="p-6">
+        <h3 class="text-xl font-bold text-blue-800 mb-1">Saumu Shabani</h3>
+        <p class="text-blue-600 font-medium mb-3">Operations Officer</p>
+        <p class="text-sm text-gray-700">Coordinating logistics operations and client service delivery.</p>
+    </div>
+</div>
+
+<!-- Team Member 5 -->
+<div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 team-member-card">
+    <div class="h-64 bg-gray-100 overflow-hidden">
+        <img src="images/team/joyce-mkamila.png" 
+             alt="Joyce Mkamila - Declarant Officer" 
+             class="w-full h-full object-contain bg-gray-50 hover:scale-105 transition duration-300"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <!-- Fallback if image fails to load -->
+        <div class="w-full h-full bg-gradient-to-br from-indigo-100 to-indigo-200 flex items-center justify-center" style="display: none;">
+            <div class="text-center">
+                <div class="w-20 h-20 bg-indigo-600 rounded-full mx-auto mb-3 flex items-center justify-center">
+                    <i class="fas fa-file-alt text-white text-2xl"></i>
+                </div>
+                <div class="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm">
+                    Declarant
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="p-6">
+        <h3 class="text-xl font-bold text-blue-800 mb-1">Joyce Mkamila</h3>
+        <p class="text-blue-600 font-medium mb-3">Declarant Officer</p>
+        <p class="text-sm text-gray-700">Handling customs declarations and regulatory compliance.</p>
+    </div>
+</div>
+
+<!-- Team Member 6 -->
+<div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 team-member-card">
+    <div class="h-64 bg-gray-100 overflow-hidden">
+        <img src="images/team/haule-nicholaus.png" 
+             alt="Haule Nicholaus - Documentation Specialist" 
+             class="w-full h-full object-contain bg-gray-50 hover:scale-105 transition duration-300"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <!-- Fallback if image fails to load -->
+        <div class="w-full h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center" style="display: none;">
+            <div class="text-center">
+                <div class="w-20 h-20 bg-orange-600 rounded-full mx-auto mb-3 flex items-center justify-center">
+                    <i class="fas fa-folder-open text-white text-2xl"></i>
+                </div>
+                <div class="bg-orange-600 text-white px-3 py-1 rounded-full text-sm">
+                    Documentation
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="p-6">
+        <h3 class="text-xl font-bold text-blue-800 mb-1">Haule Nicholaus</h3>
+        <p class="text-blue-600 font-medium mb-3">Documentation Specialist</p>
+        <p class="text-sm text-gray-700">Managing documentation processes and record keeping.</p>
+    </div>
+</div>
+
+
+
+
+            <!-- Additional Team Member Placeholder -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition duration-300">
+                <div class="h-64 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                    <div class="text-center">
+                        <i class="fas fa-users text-blue-600 text-6xl mb-4"></i>
+                        <p class="text-blue-800 font-medium">Contact Our Experienced Team</p>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-blue-800 mb-1"></h3>
+                    <p class="text-blue-600 font-medium mb-2"></p>
+                    <p class="text-sm text-gray-600 mb-3"></p>
+                    <p class="text-sm text-gray-700">Looking for tailored clearing & forwarding services?. Contact us and one of our team members will reach out.</p>
+                    <button onclick="openQuoteModal()" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition duration-300">
+                        Contact Us
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Statistics -->
+        <div class="mt-16 bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl p-8 text-white">
+            <div class="text-center mb-8">
+                <h3 class="text-2xl font-bold mb-2">Our Team by Numbers</h3>
+                <p class="text-blue-200">Dedicated professionals serving your logistics needs</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div>
+                    <div class="text-3xl font-bold mb-2">6+</div>
+                    <div class="text-blue-200 text-sm">Team Members</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold mb-2">10+</div>
+                    <div class="text-blue-200 text-sm">Years Experience</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold mb-2">500+</div>
+                    <div class="text-blue-200 text-sm">Projects Completed</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold mb-2">8</div>
+                    <div class="text-blue-200 text-sm">Countries Served</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-800 mb-4">Contact Us</h2>
+                <div class="w-20 h-1 bg-blue-600 mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <div class="bg-blue-50 p-8 rounded-xl shadow-lg mb-8">
+                        <h3 class="text-2xl font-bold text-blue-800 mb-6">Company Information</h3>
+
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-building text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-blue-800">Company Name</h4>
+                                    <p class="text-gray-700">OVERSEACE HITECH INDUSTRIAL COMPANY LIMITED</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-map-marker-alt text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-blue-800">Physical Address</h4>
+                                    <p class="text-gray-700">Office Nr 12 On Floor Nr 2 in PSSSF Samora House, Junction of Samora and Morogoro Rd, Dar es Salaam</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-envelope text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-blue-800">Postal Address</h4>
+                                    <p class="text-gray-700">P.O BOX 22639, Dar es Salaam, Tanzania.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-phone-alt text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-blue-800">Telephone</h4>
+                                    <p class="text-gray-700">+255 692 034838</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-mobile-alt text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-blue-800">Mobile</h4>
+                                    <p class="text-gray-700">+255 717 225 030</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-fax text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-blue-800">Fax</h4>
+                                    <p class="text-gray-700">+255 222 128340</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-envelope text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-blue-800">Email</h4>
+                                    <p class="text-gray-700">hello@overseacehitech.co.tz</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="map-container rounded-xl shadow-lg">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3962.194188111119!2d39.28051441477196!3d-6.813369995060843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x185c4b0c28a38a91%3A0x613a8b1a3c6f1e1a!2sSamora%20Ave%2C%20Dar%20es%20Salaam%2C%20Tanzania!5e0!3m2!1sen!2sus!4v1623256789012!5m2!1sen!2sus" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="text-2xl font-bold text-blue-800 mb-6">Send Us a Message</h3>
+
+                        <form id="contact-form" class="space-y-6">
+                            <div>
+                                <label for="name" class="block text-gray-700 font-medium mb-2">Your Name</label>
+                                <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                            </div>
+
+                            <div>
+                                <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                                <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                            </div>
+
+                            <div>
+                                <label for="phone" class="block text-gray-700 font-medium mb-2">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+
+                            <div>
+                                <label for="subject" class="block text-gray-700 font-medium mb-2">Subject</label>
+                                <input type="text" id="subject" name="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                            </div>
+
+                            <div>
+                                <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
+                                <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 mb-4">
+                                Send Message <i class="fas fa-paper-plane ml-2"></i>
+                            </button>
+
+                            <!-- WhatsApp Chat Option -->
+                            <div class="text-center">
+                                <p class="text-gray-600 text-sm mb-3">Or chat with us directly</p>
+                                <a href="https://wa.me/255717225030?text=Hello%20OVERSEACE%20HITECH,%20I%20would%20like%20to%20inquire%20about%20your%20logistics%20services."
+                                   target="_blank"
+                                   class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105">
+                                    <i class="fab fa-whatsapp mr-2 text-xl"></i>
+                                    Chat on WhatsApp
+                                </a>
+                            </div>
+                        </form>
+
+                        <div id="form-success" class="hidden mt-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
+                            <strong class="font-bold">Success!</strong>
+                            <span class="block sm:inline">Your message has been sent successfully. We'll get back to you soon.</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <a href="#" class="bg-blue-100 hover:bg-blue-200 text-blue-800 p-4 rounded-lg text-center transition">
+                            <i class="fab fa-facebook-f text-xl mb-2"></i>
+                            <p class="text-xs">Facebook</p>
+                        </a>
+                        <a href="#" class="bg-blue-400 hover:bg-blue-500 text-white p-4 rounded-lg text-center transition">
+                            <i class="fab fa-twitter text-xl mb-2"></i>
+                            <p class="text-xs">Twitter</p>
+                        </a>
+                        <a href="#" class="bg-pink-600 hover:bg-pink-700 text-white p-4 rounded-lg text-center transition">
+                            <i class="fab fa-instagram text-xl mb-2"></i>
+                            <p class="text-xs">Instagram</p>
+                        </a>
+                        <a href="#" class="bg-blue-700 hover:bg-blue-800 text-white p-4 rounded-lg text-center transition">
+                            <i class="fab fa-linkedin-in text-xl mb-2"></i>
+                            <p class="text-xs">LinkedIn</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <img src="images/company-logo/company-logo.png" alt="OVERSEACE HITECH Logo" class="w-20 h-20 object-contain mr-3">
+                        <h3 class="text-xl font-bold">OVERSEACE HITECH</h3>
+                    </div>
+                    <p class="text-blue-200 mb-4">
+                        Providing exceptional clearing, forwarding, and logistics services across Tanzania and East Africa.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-blue-200 hover:text-white transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-blue-200 hover:text-white transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-blue-200 hover:text-white transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="text-blue-200 hover:text-white transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-blue-200 hover:text-white transition">Home</a></li>
+                        <li><a href="#about" class="text-blue-200 hover:text-white transition">About Us</a></li>
+                        <li><a href="services.html" class="text-blue-200 hover:text-white transition">Services</a></li>
+                        <li><a href="gallery.html" class="text-blue-200 hover:text-white transition">Gallery</a></li>
+                        <li><a href="#team" class="text-blue-200 hover:text-white transition">Our Team</a></li>
+                        <li><a href="#contact" class="text-blue-200 hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Our Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="services.html#forwarding-clearing" class="text-blue-200 hover:text-white transition">Forwarding & Clearing</a></li>
+
+                        <li><a href="services.html#transportation" class="text-blue-200 hover:text-white transition">Transportation</a></li>
+                        <li><a href="services.html#logistics-solutions" class="text-blue-200 hover:text-white transition">Logistics Solutions</a></li>
+                        <li><a href="services.html#customs-documentation" class="text-blue-200 hover:text-white transition">Customs Documentation</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Contact Info</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-blue-300"></i>
+                            <span class="text-blue-200">Office Nr 12 On Floor Nr 2 in PSSSF Samora House, Junction of Samora and Morogoro Rd, Dar es Salaam</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-3 text-blue-300"></i>
+                            <span class="text-blue-200">+255 717 225 030</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-blue-300"></i>
+                            <span class="text-blue-200">hello@overseacehitech.co.tz
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-clock mt-1 mr-3 text-blue-300"></i>
+                            <span class="text-blue-200">Mon-Fri: 8:00 AM - 5:00 PM</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-blue-800 mt-12 pt-8 text-center text-blue-300">
+                <p>&copy; 2023 OVERSEACE HITECH INDUSTRIAL COMPANY LIMITED. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+
+                // Close mobile menu if open
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
+        // Form submission with backend integration
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            // Show loading state
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+            submitButton.disabled = true;
+
+            // Send to backend
+            fetch('process-form.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    // Reset form
+                    this.reset();
+
+                    // Show success message
+                    document.getElementById('form-success').classList.remove('hidden');
+
+                    // Hide success message after 5 seconds
+                    setTimeout(function() {
+                        document.getElementById('form-success').classList.add('hidden');
+                    }, 5000);
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again or contact us directly.');
+            })
+            .finally(() => {
+                // Restore button
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+            });
+        });
+
+        // Animation on scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.service-card, .timeline-item, .floating');
+
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+
+                if(elementPosition < screenPosition) {
+                    element.classList.add('animate-fade-in');
+                }
+            });
+        }
+
+        // Run animation check on load and scroll
+        window.addEventListener('load', animateOnScroll);
+        window.addEventListener('scroll', animateOnScroll);
+
+        // Hero Slider Functionality
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.hero-dot');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            // Remove active class from all slides and dots
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            // Add active class to current slide and dot
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+
+            currentSlideIndex = index;
+        }
+
+        function nextSlide() {
+            const nextIndex = (currentSlideIndex + 1) % totalSlides;
+            showSlide(nextIndex);
+        }
+
+        function currentSlide(index) {
+            showSlide(index - 1); // Convert to 0-based index
+        }
+
+        // Auto-advance slides every 5 seconds
+        setInterval(nextSlide, 5000);
+
+        // Initialize slider
+        showSlide(0);
+
+        // Quote Calculator Functions
+        function updateServicePricing() {
+            // Auto-calculate when all required fields are filled
+            const selectedServices = document.querySelectorAll('input[name="services[]"]:checked');
+            const weight = document.getElementById('quote-weight').value;
+            const cargoType = document.getElementById('quote-cargo-type').value;
+            const timeline = document.getElementById('quote-timeline').value;
+
+            if (selectedServices.length > 0 && weight && cargoType && timeline) {
+                calculateQuote();
+            }
+        }
+
+        function setQuickDistance(distance) {
+            if (distance) {
+                document.getElementById('quote-distance').value = distance;
+                updateServicePricing();
+            }
+        }
+
+        function calculateQuote() {
+            // Get form values
+            const selectedServices = document.querySelectorAll('input[name="services[]"]:checked');
+            const weightInput = document.getElementById('quote-weight');
+            const cargoSelect = document.getElementById('quote-cargo-type');
+            const timelineSelect = document.getElementById('quote-timeline');
+            const distanceInput = document.getElementById('quote-distance');
+
+            // Validate required fields
+            if (selectedServices.length === 0 || !weightInput.value || !cargoSelect.value || !timelineSelect.value) {
+                alert('Please fill in all required fields (Services, Weight, Cargo Type, and Timeline)');
+                return;
+            }
+
+            // Calculate combined base price from selected services
+            let basePrice = 0;
+            let serviceNames = [];
+            selectedServices.forEach(service => {
+                basePrice += parseFloat(service.dataset.basePrice) || 0;
+                serviceNames.push(service.nextElementSibling.querySelector('.font-medium').textContent);
+            });
+
+            const weight = parseFloat(weightInput.value) || 0;
+            const cargoMultiplier = parseFloat(cargoSelect.options[cargoSelect.selectedIndex].dataset.multiplier) || 1.0;
+            const timelineMultiplier = parseFloat(timelineSelect.options[timelineSelect.selectedIndex].dataset.multiplier) || 1.0;
+            const distance = parseFloat(distanceInput.value) || 500; // Default distance if not specified
+
+            // Calculate pricing components
+            const weightFactor = Math.ceil(weight / 100) * 50000; // 50,000TSH per 100kg
+            const distanceFactor = Math.ceil(distance / 100) * 30000; // 30,000TSH per 100km
+
+            // Calculate subtotal
+            const subtotal = basePrice + weightFactor + distanceFactor;
+
+            // Apply multipliers
+            const total = subtotal * cargoMultiplier * timelineMultiplier;
+
+            // Update display
+            document.getElementById('base-price').textContent = Math.round(basePrice).toLocaleString() + 'TSH';
+            document.getElementById('weight-factor').textContent = Math.round(weightFactor).toLocaleString() + 'TSH';
+            document.getElementById('distance-factor').textContent = Math.round(distanceFactor).toLocaleString() + 'TSH';
+            document.getElementById('cargo-multiplier').textContent = cargoMultiplier.toFixed(1) + 'x';
+            document.getElementById('timeline-multiplier').textContent = timelineMultiplier.toFixed(1) + 'x';
+            document.getElementById('total-price').textContent = Math.round(total).toLocaleString() + 'TSH';
+
+            // Update the base price label to show selected services
+            const basePriceLabel = document.querySelector('#price-calculation .space-y-3 div:first-child span:first-child');
+            if (basePriceLabel) {
+                basePriceLabel.textContent = `Base Service Fee (${serviceNames.join(', ')}):`;
+            }
+
+            // Show calculation
+            document.getElementById('price-calculation').style.display = 'block';
+
+            // Scroll to show the calculation
+            document.getElementById('price-calculation').scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest'
+            });
+        }
+
+        // Wait for DOM to be fully loaded before initializing functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user came from services page wanting to open quote modal
+            if (window.location.hash === '#quote-modal') {
+                setTimeout(function() {
+                    if (window.openQuoteModal) {
+                        window.openQuoteModal();
+                    }
+                }, 500);
+            }
+            // Back to Top Button Functionality
+            const backToTopButton = document.getElementById('backToTop');
+
+            if (backToTopButton) {
+                // Show/hide button based on scroll position with throttling for performance
+                let ticking = false;
+                function updateBackToTop() {
+                    if (window.pageYOffset > 300) {
+                        backToTopButton.classList.add('show');
+                    } else {
+                        backToTopButton.classList.remove('show');
+                    }
+                    ticking = false;
+                }
+
+                window.addEventListener('scroll', function() {
+                    if (!ticking) {
+                        requestAnimationFrame(updateBackToTop);
+                        ticking = true;
+                    }
+                });
+
+                // Scroll to top when button is clicked
+                backToTopButton.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+
+            // Quote Modal Functionality
+            const quoteModal = document.getElementById('quoteModal');
+            const quoteForm = document.getElementById('quoteForm');
+            const quoteSuccess = document.getElementById('quote-success');
+
+            if (quoteModal && quoteForm && quoteSuccess) {
+                // Function to open quote modal
+                window.openQuoteModal = function() {
+                    quoteModal.classList.add('show');
+                    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                };
+
+                // Function to close quote modal
+                window.closeQuoteModal = function() {
+                    quoteModal.classList.remove('show');
+                    document.body.style.overflow = 'auto'; // Restore scrolling
+                    quoteForm.reset(); // Reset form
+                    quoteSuccess.classList.add('hidden'); // Hide success message
+                };
+
+                // Close modal when clicking outside
+                quoteModal.addEventListener('click', function(e) {
+                    if (e.target === quoteModal) {
+                        window.closeQuoteModal();
+                    }
+                });
+
+                // Close modal with Escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && quoteModal.classList.contains('show')) {
+                        window.closeQuoteModal();
+                    }
+                });
+
+                // Handle quote form submission
+                quoteForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Get form data
+                    const formData = new FormData(quoteForm);
+                    const data = Object.fromEntries(formData);
+
+                    // Add calculated total if available
+                    const totalPriceElement = document.getElementById('total-price');
+                    if (totalPriceElement && totalPriceElement.textContent !== '0TSH') {
+                        data.estimated_total = totalPriceElement.textContent;
+                    }
+
+                    // Show loading state
+                    const submitButton = quoteForm.querySelector('button[type="submit"]');
+                    const originalText = submitButton.innerHTML;
+                    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+                    submitButton.disabled = true;
+
+                    // Send to backend
+                    fetch('process-form.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success) {
+                            // Hide form and show success message
+                            quoteForm.style.display = 'none';
+                            quoteSuccess.classList.remove('hidden');
+
+                            // Reset button and form after showing success
+                            setTimeout(() => {
+                                submitButton.innerHTML = originalText;
+                                submitButton.disabled = false;
+                                quoteForm.style.display = 'block';
+                                quoteForm.reset();
+                                document.getElementById('price-calculation').style.display = 'none';
+                                window.closeQuoteModal();
+                            }, 3000);
+                        } else {
+                            alert('Error: ' + result.message);
+                            submitButton.innerHTML = originalText;
+                            submitButton.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again or contact us directly.');
+                        submitButton.innerHTML = originalText;
+                        submitButton.disabled = false;
+                    });
+                });
+            }
+        });
+    </script>
+
+    <!-- Get A Quote Modal -->
+    <div id="quoteModal" class="modal">
+        <div class="modal-content max-w-4xl mx-auto">
+            <div class="modal-header">
+                <h2 class="text-lg sm:text-xl lg:text-2xl font-bold text-responsive">Get A Quote</h2>
+                <p class="text-blue-100 mt-2 text-sm sm:text-base text-responsive">Tell us about your logistics needs and we'll provide you with a customized quote</p>
+                <button class="modal-close" onclick="closeQuoteModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="quoteForm" class="space-y-4 sm:space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                        <div>
+                            <label for="quote-name" class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Full Name *</label>
+                            <input type="text" id="quote-name" name="name" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base" required>
+                        </div>
+                        <div>
+                            <label for="quote-email" class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Email Address *</label>
+                            <input type="email" id="quote-email" name="email" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base" required>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                        <div>
+                            <label for="quote-phone" class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Phone Number *</label>
+                            <input type="tel" id="quote-phone" name="phone" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base" required>
+                        </div>
+                        <div>
+                            <label for="quote-company" class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Company Name</label>
+                            <input type="text" id="quote-company" name="company" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Services Required *</label>
+                        <div class="space-y-3 max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="service-customs-clearing" name="services[]" value="customs-clearing" data-base-price="500000" class="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" onchange="updateServicePricing()">
+                                <label for="service-customs-clearing" class="text-gray-700 cursor-pointer flex-1">
+                                    <span class="font-medium">Customs Clearing</span>
+                                    <span class="text-sm text-gray-500 block">Base price: 500,000TSH</span>
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="service-freight-forwarding" name="services[]" value="freight-forwarding" data-base-price="800000" class="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" onchange="updateServicePricing()">
+                                <label for="service-freight-forwarding" class="text-gray-700 cursor-pointer flex-1">
+                                    <span class="font-medium">Freight Forwarding</span>
+                                    <span class="text-sm text-gray-500 block">Base price: 800,000TSH</span>
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="service-warehousing" name="services[]" value="warehousing" data-base-price="300000" class="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" onchange="updateServicePricing()">
+                                <label for="service-warehousing" class="text-gray-700 cursor-pointer flex-1">
+                                    <span class="font-medium">Warehousing & Storage</span>
+                                    <span class="text-sm text-gray-500 block">Base price: 300,000TSH</span>
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="service-transportation" name="services[]" value="transportation" data-base-price="1000000" class="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" onchange="updateServicePricing()">
+                                <label for="service-transportation" class="text-gray-700 cursor-pointer flex-1">
+                                    <span class="font-medium">Transportation</span>
+                                    <span class="text-sm text-gray-500 block">Base price: 1,000,000TSH</span>
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="service-logistics-consulting" name="services[]" value="logistics-consulting" data-base-price="600000" class="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" onchange="updateServicePricing()">
+                                <label for="service-logistics-consulting" class="text-gray-700 cursor-pointer flex-1">
+                                    <span class="font-medium">Logistics Consulting</span>
+                                    <span class="text-sm text-gray-500 block">Base price: 600,000TSH</span>
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="service-supply-chain" name="services[]" value="supply-chain" data-base-price="1200000" class="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" onchange="updateServicePricing()">
+                                <label for="service-supply-chain" class="text-gray-700 cursor-pointer flex-1">
+                                    <span class="font-medium">Supply Chain Management</span>
+                                    <span class="text-sm text-gray-500 block">Base price: 1,200,000TSH</span>
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="service-other" name="services[]" value="other" data-base-price="0" class="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" onchange="updateServicePricing()">
+                                <label for="service-other" class="text-gray-700 cursor-pointer flex-1">
+                                    <span class="font-medium">Other Services</span>
+                                    <span class="text-sm text-gray-500 block">Custom pricing</span>
+                                </label>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">Select one or more services. Prices will be combined for multiple selections.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="quote-origin" class="block text-gray-700 font-medium mb-2">Origin Location</label>
+                            <input type="text" id="quote-origin" name="origin" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="e.g., Dar es Salaam Port">
+                        </div>
+                        <div>
+                            <label for="quote-destination" class="block text-gray-700 font-medium mb-2">Destination</label>
+                            <input type="text" id="quote-destination" name="destination" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="e.g., Kampala, Uganda">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="quote-cargo-type" class="block text-gray-700 font-medium mb-2">Cargo Type</label>
+                            <select id="quote-cargo-type" name="cargo-type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="updateServicePricing()">
+                                <option value="">Select cargo type</option>
+                                <option value="general" data-multiplier="1.0">General Cargo</option>
+                                <option value="hazardous" data-multiplier="1.5">Hazardous Materials</option>
+                                <option value="perishable" data-multiplier="1.3">Perishable Goods</option>
+                                <option value="oversized" data-multiplier="2.0">Oversized/Heavy Cargo</option>
+                                <option value="containers" data-multiplier="1.2">Containers</option>
+                                <option value="vehicles" data-multiplier="1.4">Vehicles</option>
+                                <option value="other" data-multiplier="1.0">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="quote-weight" class="block text-gray-700 font-medium mb-2">Estimated Weight (kg) *</label>
+                            <input type="number" id="quote-weight" name="weight" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="e.g., 500" min="1" onchange="updateServicePricing()" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="quote-timeline" class="block text-gray-700 font-medium mb-2">Required Timeline</label>
+                        <select id="quote-timeline" name="timeline" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="updateServicePricing()">
+                            <option value="">Select timeline</option>
+                            <option value="urgent" data-multiplier="2.0">Urgent (Within 24 hours)</option>
+                            <option value="asap" data-multiplier="1.5">ASAP (Within 3 days)</option>
+                            <option value="week" data-multiplier="1.2">Within a week</option>
+                            <option value="month" data-multiplier="1.0">Within a month</option>
+                            <option value="flexible" data-multiplier="0.9">Flexible</option>
+                        </select>
+                    </div>
+
+                    <!-- Distance Calculator -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="quote-distance" class="block text-gray-700 font-medium mb-2">Estimated Distance (km)</label>
+                            <input type="number" id="quote-distance" name="distance" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="e.g., 1200" min="1" onchange="updateServicePricing()">
+                            <p class="text-xs text-gray-500 mt-1">Leave blank for automatic calculation</p>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Quick Distance Reference</label>
+                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="setQuickDistance(this.value)">
+                                <option value="">Select common routes</option>
+                                <option value="50">Dar es Salaam - Local (50 km)</option>
+                                <option value="600">Dar es Salaam - Dodoma (600 km)</option>
+                                <option value="1200">Dar es Salaam - Kampala (1200 km)</option>
+                                <option value="1500">Dar es Salaam - Kigali (1500 km)</option>
+                                <option value="800">Dar es Salaam - Bujumbura (800 km)</option>
+                                <option value="2000">Dar es Salaam - Kinshasa (2000 km)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="quote-details" class="block text-gray-700 font-medium mb-2">Additional Details</label>
+                        <textarea id="quote-details" name="details" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Please provide any additional information about your shipment requirements..."></textarea>
+                    </div>
+
+                    <!-- Price Calculation Display -->
+                    <div id="price-calculation" class="bg-blue-50 p-6 rounded-lg border border-blue-200" style="display: none;">
+                        <h4 class="text-lg font-bold text-blue-800 mb-4">Estimated Quote Breakdown</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Base Service Fee:</span>
+                                <span id="base-price" class="font-medium">0TSH</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Weight Factor:</span>
+                                <span id="weight-factor" class="font-medium">0TSH</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Distance Factor:</span>
+                                <span id="distance-factor" class="font-medium">0TSH</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Cargo Type Multiplier:</span>
+                                <span id="cargo-multiplier" class="font-medium">1.0x</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Timeline Multiplier:</span>
+                                <span id="timeline-multiplier" class="font-medium">1.0x</span>
+                            </div>
+                            <hr class="border-blue-300">
+                            <div class="flex justify-between text-lg font-bold">
+                                <span class="text-blue-800">Estimated Total:</span>
+                                <span id="total-price" class="text-blue-800">0TSH</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded">
+                            <p class="text-sm text-yellow-800">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                This is an estimated quote. Final pricing may vary based on specific requirements and current market conditions.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button type="button" onclick="calculateQuote()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                            <i class="fas fa-calculator mr-2"></i>
+                            Calculate Quote
+                        </button>
+                        <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Send Quote Request
+                        </button>
+                        <button type="button" onclick="closeQuoteModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-6 rounded-lg transition duration-300">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+
+                <div id="quote-success" class="hidden mt-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
+                    <strong class="font-bold">Quote Request Sent!</strong>
+                    <span class="block sm:inline">We'll review your requirements and send you a detailed quote within 24 hours.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" title="Back to Top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Performance Optimization Script -->
+    <script src="js/performance-optimizer.js" defer></script>
+</body>
+</html>
