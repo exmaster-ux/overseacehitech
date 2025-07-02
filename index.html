@@ -2173,7 +2173,7 @@
                 <button class="modal-close" onclick="closeQuoteModal()">&times;</button>
             </div>
             <div class="modal-body">
-              <form name="Quote" netlify netlify-honeypot="bot-field" method="POST" class="space-y-4">
+              <form id="quoteForm" name="Quote" netlify netlify-honeypot="bot-field" method="POST" class="space-y-4">
                 <input type="hidden" name="form-name" value="Quote">
                 <p style="display:none">
                   <label>Don’t fill this out if you're human: <input name="bot-field"></label>
@@ -2196,6 +2196,7 @@
                 </div>
                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 w-full">Request Quote</button>
               </form>
+              <div id="quote-success" class="hidden text-green-600 font-bold mt-4 text-center">Thank you! Your quote request has been received.</div>
             </div>
         </div>
     </div>
