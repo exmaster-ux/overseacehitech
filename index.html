@@ -2104,63 +2104,8 @@
                     }
                 });
 
-                // Handle quote form submission
-                quoteForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-
-                    // Get form data
-                    const formData = new FormData(quoteForm);
-                    const data = Object.fromEntries(formData);
-
-                    // Add calculated total if available
-                    const totalPriceElement = document.getElementById('total-price');
-                    if (totalPriceElement && totalPriceElement.textContent !== '0TSH') {
-                        data.estimated_total = totalPriceElement.textContent;
-                    }
-
-                    // Show loading state
-                    const submitButton = quoteForm.querySelector('button[type="submit"]');
-                    const originalText = submitButton.innerHTML;
-                    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
-                    submitButton.disabled = true;
-
-                    // Send to backend
-                    fetch('process-form.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data)
-                    })
-                    .then(response => response.json())
-                    .then(result => {
-                        if (result.success) {
-                            // Hide form and show success message
-                            quoteForm.style.display = 'none';
-                            quoteSuccess.classList.remove('hidden');
-
-                            // Reset button and form after showing success
-                            setTimeout(() => {
-                                submitButton.innerHTML = originalText;
-                                submitButton.disabled = false;
-                                quoteForm.style.display = 'block';
-                                quoteForm.reset();
-                                document.getElementById('price-calculation').style.display = 'none';
-                                window.closeQuoteModal();
-                            }, 3000);
-                        } else {
-                            alert('Error: ' + result.message);
-                            submitButton.innerHTML = originalText;
-                            submitButton.disabled = false;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred. Please try again or contact us directly.');
-                        submitButton.innerHTML = originalText;
-                        submitButton.disabled = false;
-                    });
-                });
+                // REMOVE custom JS fetch for Netlify Forms compatibility
+                // Netlify will handle the form submission natively
             }
         });
     </script>
