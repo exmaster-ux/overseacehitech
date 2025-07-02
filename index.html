@@ -895,7 +895,7 @@
                     <div class="text-left min-w-0 flex-1">
                         <h4 class="font-bold text-sm sm:text-base lg:text-lg text-responsive">Contact Us</h4>
                         <p class="text-blue-200 text-xs sm:text-sm text-responsive">+255 717 225 030</p>
-                        <p class="text-blue-200 text-xs sm:text-sm text-ellipsis-mobile">mudyhajixpro@gmail.com</p>
+                        <p class="text-blue-200 text-xs sm:text-sm text-ellipsis-mobile">hello.overseacehitech@gmail.com</p>
                     </div>
                 </div>
 
@@ -1740,32 +1740,60 @@
 
 
 
-    <!-- Contact Section (with Netlify Form) -->
+    <!-- Contact Section (restored original design, Netlify enabled) -->
     <section id="contact" class="section-padding py-12 sm:py-16 bg-white">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12 sm:mb-16">
           <h2 class="section-title text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-800 mb-4 text-responsive">Contact Us</h2>
           <div class="w-16 sm:w-20 h-1 bg-blue-600 mx-auto"></div>
         </div>
-        <form name="Contact" netlify netlify-honeypot="bot-field" method="POST" class="max-w-xl mx-auto bg-blue-50 p-8 rounded-xl shadow-lg" >
-          <input type="hidden" name="form-name" value="Contact">
-          <p style="display:none">
-            <label>Don’t fill this out if you're human: <input name="bot-field"></label>
-          </p>
-          <div class="mb-4">
-            <label for="name" class="block text-blue-800 font-bold mb-2">Name</label>
-            <input type="text" id="name" name="name" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+        <div class="flex flex-col md:flex-row md:space-x-12 items-start justify-center">
+          <div class="w-full md:w-1/2 mb-10 md:mb-0">
+            <div class="bg-blue-50 p-8 rounded-xl shadow-lg h-full flex flex-col justify-center">
+              <h3 class="text-xl font-bold text-blue-800 mb-4">Get in Touch</h3>
+              <p class="text-gray-700 mb-6">We'd love to hear from you! Fill out the form and our team will get back to you as soon as possible.</p>
+              <ul class="space-y-4">
+                <li class="flex items-center">
+                  <span class="bg-blue-700 text-white rounded-full p-3 mr-4"><i class="fas fa-phone-alt"></i></span>
+                  <span class="text-blue-800 font-medium">+255 717 225 030</span>
+                </li>
+                <li class="flex items-center">
+                  <span class="bg-blue-700 text-white rounded-full p-3 mr-4"><i class="fas fa-envelope"></i></span>
+                  <span class="text-blue-800 font-medium">hello.overseacehitech@gmail.com</span>
+                </li>
+                <li class="flex items-center">
+                  <span class="bg-blue-700 text-white rounded-full p-3 mr-4"><i class="fas fa-map-marker-alt"></i></span>
+                  <span class="text-blue-800 font-medium">PSSSF Samora House, Samora & Morogoro Rd, Dar es Salaam</span>
+                </li>
+                <li class="flex items-center">
+                  <span class="bg-blue-700 text-white rounded-full p-3 mr-4"><i class="fas fa-clock"></i></span>
+                  <span class="text-blue-800 font-medium">Mon-Fri: 8:00 AM - 5:00 PM</span>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div class="mb-4">
-            <label for="email" class="block text-blue-800 font-bold mb-2">Email</label>
-            <input type="email" id="email" name="email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+          <div class="w-full md:w-1/2">
+            <form name="Contact" netlify netlify-honeypot="bot-field" method="POST" class="bg-white p-8 rounded-xl shadow-lg" autocomplete="on">
+              <input type="hidden" name="form-name" value="Contact">
+              <p style="display:none">
+                <label>Don’t fill this out if you're human: <input name="bot-field"></label>
+              </p>
+              <div class="mb-4">
+                <label for="name" class="block text-blue-800 font-bold mb-2">Name</label>
+                <input type="text" id="name" name="name" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+              </div>
+              <div class="mb-4">
+                <label for="email" class="block text-blue-800 font-bold mb-2">Email</label>
+                <input type="email" id="email" name="email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+              </div>
+              <div class="mb-4">
+                <label for="message" class="block text-blue-800 font-bold mb-2">Message</label>
+                <textarea id="message" name="message" rows="5" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"></textarea>
+              </div>
+              <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 w-full">Send Message</button>
+            </form>
           </div>
-          <div class="mb-4">
-            <label for="message" class="block text-blue-800 font-bold mb-2">Message</label>
-            <textarea id="message" name="message" rows="5" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"></textarea>
-          </div>
-          <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 w-full">Send Message</button>
-        </form>
+        </div>
       </div>
     </section>
 
@@ -1833,7 +1861,7 @@
                         </li>
                         <li class="flex items-start">
                             <i class="fas fa-envelope mt-1 mr-3 text-blue-300"></i>
-                            <span class="text-blue-200">hello@overseacehitech.co.tz
+                            <span class="text-blue-200">hello.overseacehitech.co.tz
                         </li>
                         <li class="flex items-start">
                             <i class="fas fa-clock mt-1 mr-3 text-blue-300"></i>
